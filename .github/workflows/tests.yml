@@ -1,0 +1,52 @@
+name: Python application tests
+
+on:
+  [push]
+
+env:
+  API_DB_HOST: localhost
+  API_DB_USER: root
+  API_DB_PASSWORD: ${{ secrets.API_DB_PASSWORD }}
+  API_DB_DATABASE: imob
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+
+    - name: Install dependencies
+      run: |
+        cd api
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Set up environment variables
+      env:
+        API_DB_HOST: ${{ env.API_DB_HOST }}
+        API_DB_USER: ${{ env.API_DB_USER }}
+        API_DB_PASSWORD: ${{ env.API_DB_PASSWORD }}
+        API_DB_DATABASE: ${{ env.API_DB_DATABASE }}
+      run: |
+        echo "API_DB_HOST=${API_DB_HOST}" >> $GITHUB_ENV
+        echo "API_DB_USER=${API_DB_USER}" >> $GITHUB_ENV
+        echo "API_DB_PASSWORD=${API_DB_PASSWORD}" >> $GITHUB_ENV
+        echo "API_DB_DATABASE=${API_DB_DATABASE}" >> $GITHUB_ENV
+
+    - name: Run tests
+      env:
+        PYTHONPATH: $PYTHONPATH:./api
+      run: |
+        cd api
+        python -m pytest
+    - name: Run flake8
+      
+      run: |
+        cd api
+        flake8 .

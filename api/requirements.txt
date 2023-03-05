@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+sqlalchemy
+pydantic[dotenv]
+alembic
+aiomysql
+python-dotenv
+sqlalchemy-utils
+pydantic_sqlalchemy
+pytest
+httpx
+pytest-asyncio
+flake8
+black
