@@ -27,7 +27,7 @@ class Image(Base):
     __mapper_args__ = {"eager_defaults": False}
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    url =Column(VARCHAR(512), nullable=False)
+    url = Column(VARCHAR(512), nullable=False)
     property_id = Column(Integer, ForeignKey("properties.id"))
     created_at = Column(DateTime, server_default=func.current_timestamp())
 

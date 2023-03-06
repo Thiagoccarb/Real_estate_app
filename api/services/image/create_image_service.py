@@ -19,6 +19,7 @@ class AddImageService:
         self.image_repository = image_repository
         self.property_repository = property_repository
         self.b2 = b2
+
     async def execute(self, request: CreateImageRequest) -> CreatedImageData:
         existing_property = await self.property_repository.find_by_id(
             id=request.property_id
