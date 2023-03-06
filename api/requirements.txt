@@ -12,3 +12,4 @@ httpx
 pytest-asyncio
 flake8
 black
+b2sdk

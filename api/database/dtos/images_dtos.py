@@ -2,5 +2,5 @@ from pydantic import BaseModel
 
 
 class CreateImage(BaseModel):
-    binary: bytes
+    url: str
     property_id: int

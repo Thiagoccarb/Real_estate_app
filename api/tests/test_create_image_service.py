@@ -1,5 +1,6 @@
 import pytest
 import base64
+from unittest.mock import AsyncMock, MagicMock
 
 from errors.status_error import StatusError
 from services.image.create_image_service import AddImageService
@@ -28,10 +29,19 @@ def fake_properties_repository():
 
 
 @pytest.fixture
-def add_image_service(fake_images_repository, fake_properties_repository):
+def mock_b2skd():
+    mock_instance = MagicMock()
+    mock_instance.upload_binary_to_blackblaze.return_value = AsyncMock()
+    mock_instance.get_download_url.return_value = "http://test-url.com"
+    return mock_instance
+
+
+@pytest.fixture
+def add_image_service(fake_images_repository, fake_properties_repository, mock_b2skd):
     return AddImageService(
         image_repository=fake_images_repository,
         property_repository=fake_properties_repository,
+        b2=mock_b2skd,
     )
 
 
