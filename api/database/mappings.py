@@ -27,10 +27,9 @@ class Image(Base):
     __mapper_args__ = {"eager_defaults": False}
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    binary = Column(LargeBinary, nullable=False)
+    url =Column(VARCHAR(512), nullable=False)
     property_id = Column(Integer, ForeignKey("properties.id"))
     created_at = Column(DateTime, server_default=func.current_timestamp())
-    updated_at = Column(DateTime, nullable=True, default=None)
 
 
 class City(Base):
