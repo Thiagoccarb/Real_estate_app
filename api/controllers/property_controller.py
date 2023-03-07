@@ -14,6 +14,5 @@ class PropertyController:
         request: CreatePropertyRequest,
         add_property_service: AddPropertyService = Depends(AddPropertyService),
     ) -> CreatePropertyResponse:
-
         new_property: Property = await add_property_service.execute(request)
         return CreatePropertyResponse(result=new_property)
