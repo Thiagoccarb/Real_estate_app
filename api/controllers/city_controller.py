@@ -10,6 +10,5 @@ class CityController:
         request: CreateCityRequest,
         add_city_service: AddCityService = Depends(AddCityService),
     ) -> CreateCityResponse:
-
         new_property: City = await add_city_service.execute(request)
         return CreateCityResponse(result=new_property)
