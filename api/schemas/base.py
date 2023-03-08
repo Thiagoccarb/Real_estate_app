@@ -13,6 +13,10 @@ class Error(BaseModel):
     description: str
 
 
+class Token(BaseModel):
+    token: str
+
+
 class MissingFieldErrorSchema(BaseModel):
     success: bool
     error: Optional[Error]

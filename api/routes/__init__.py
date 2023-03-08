@@ -5,6 +5,8 @@ from routes.property_route import property_router
 from routes.image_route import image_router
 from routes.city_route import city_router
 from routes.address_route import address_router
+from routes.auth_route import auth_router
+
 
 app_router = APIRouter(redirect_slashes=True)
 
@@ -120,6 +122,29 @@ app_router.include_router(
                             "number": 123,
                             "cep": "11111-111",
                         },
+                    },
+                }
+            },
+        },
+        400: {
+            "description": "missing_field",
+            "model": MissingFieldErrorSchema,
+        },
+        422: {},
+    },
+)
+
+app_router.include_router(
+    auth_router,
+    responses={
+        200: {
+            "description": "token granted",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "success": True,
+                        "error": None,
+                        "result": {"token": "eyJhbGc..."},
                     },
                 }
             },
