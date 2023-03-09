@@ -1,4 +1,5 @@
 import os
+from fastapi import Header
 from fastapi.security import OAuth2PasswordBearer
 import jwt
 from datetime import datetime, timedelta
@@ -26,7 +27,7 @@ class AuthService:
             "email": "user1@example.com",
         }
 
-    def __create_access_token(self, user_id: str):
+    def _create_access_token(self, user_id: str):
         expires_delta = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         expires_at = datetime.utcnow() + expires_delta
 
@@ -34,14 +35,22 @@ class AuthService:
             "sub": user_id,
             "exp": expires_at,
         }
-        access_token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+        access_token = jwt.encode(payload, SECRET_KEY, algorithm=["HS256"])
         return access_token
+
+    def validate_token(self, authorization: str = Header(None)):
+        if not authorization:
+            raise StatusError("unauthorized access", 401, "unauthorized_user")
+        try:
+            jwt.decode(authorization, SECRET_KEY, algorithms="HS256")
+        except Exception:
+            raise StatusError("invalid token", 401, "unauthorized_user")
 
     def execute(self, request: UserCredentialsRequest):
         if (
             self.user.get("username") == request.username
             and self.user.get("password") == request.password
         ):
-            token = self.__create_access_token("test")
+            token = self._create_access_token("test")
             return token
         raise StatusError("invalid user credentials", 401, "unauthorized_user")
