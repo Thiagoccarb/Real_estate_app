@@ -8,6 +8,18 @@ from sqlalchemy.orm import relationship
 Base = declarative_base()
 
 
+class User(Base):
+    __tablename__ = "users"
+    __mapper_args__ = {"eager_defaults": False}
+
+    id = Column(Integer, primary_key=True, autoincrement=True, index=True)
+    username = Column(VARCHAR(45), nullable=True)
+    email = Column(VARCHAR(45), nullable=False, unique=True)
+    password = Column(VARCHAR(128), nullable=False)
+    created_at = Column(DateTime, server_default=func.current_timestamp())
+    updated_at = Column(DateTime, nullable=True, default=None)
+
+
 class Property(Base):
     __tablename__ = "properties"
     __mapper_args__ = {"eager_defaults": False}

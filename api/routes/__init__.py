@@ -5,6 +5,9 @@ from routes.property_route import property_router
 from routes.image_route import image_router
 from routes.city_route import city_router
 from routes.address_route import address_router
+from routes.auth_route import auth_router
+from routes.user_route import user_router
+
 
 app_router = APIRouter(redirect_slashes=True)
 
@@ -119,6 +122,59 @@ app_router.include_router(
                             "city_id": 1,
                             "number": 123,
                             "cep": "11111-111",
+                        },
+                    },
+                }
+            },
+        },
+        400: {
+            "description": "missing_field",
+            "model": MissingFieldErrorSchema,
+        },
+        422: {},
+    },
+)
+
+app_router.include_router(
+    auth_router,
+    responses={
+        200: {
+            "description": "token granted",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "success": True,
+                        "error": None,
+                        "result": {"token": "eyJhbGc..."},
+                    },
+                }
+            },
+        },
+        400: {
+            "description": "missing_field",
+            "model": MissingFieldErrorSchema,
+        },
+        422: {},
+    },
+)
+
+app_router.include_router(
+    user_router,
+    responses={
+        200: {
+            "description": "user created",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "success": True,
+                        "error": None,
+                        "result": {
+                            "id": 1,
+                            "username": "username",
+                            "email": "email",
+                            "password": "password",
+                            "created_at": "2023-03-08T17:19:19",
+                            "updated_at": None,
                         },
                     },
                 }
