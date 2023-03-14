@@ -5,11 +5,10 @@ from services.auth.auth import AuthService
 
 
 class AuthController:
-    def login(
+    async def login(
         self,
         request: UserCredentialsRequest,
         login_service: AuthService = Depends(AuthService),
     ) -> str:
-
-        token = login_service.execute(request)
+        token = await login_service.execute(request, decode=False)
         return UserCredentialsResponse(result={"token": token})

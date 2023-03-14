@@ -9,10 +9,9 @@ class CityController:
     async def add(
         self,
         request: CreateCityRequest,
-        authorization: str = Header(None),
         add_city_service: AddCityService = Depends(AddCityService),
-        auth: AuthService = Depends(AuthService),
+        auth_service: AuthService = Depends(AuthService),
     ) -> CreateCityResponse:
-        auth.validate_token(authorization)
+        await auth_service.execute(decode=True)
         new_property: City = await add_city_service.execute(request)
         return CreateCityResponse(result=new_property)

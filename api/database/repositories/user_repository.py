@@ -39,3 +39,19 @@ class UsersRepository(AbstractUsersRepository):
             )
         user = user.scalar()
         return user if user else None
+
+    async def find_by_email(self, email: str) -> Union[User, None]:
+        async with self.session.begin():
+            user = await self.session.execute(
+                select(mappings.User).where(mappings.User.email == email)
+            )
+        user = user.scalar()
+        return user if user else None
+
+    async def find_by_id(self, id: int) -> Union[User, None]:
+        async with self.session.begin():
+            user = await self.session.execute(
+                select(mappings.User).where(mappings.User.id == id)
+            )
+        user = user.scalar()
+        return user if user else None
