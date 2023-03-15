@@ -154,7 +154,21 @@ app_router.include_router(
             "description": "missing_field",
             "model": MissingFieldErrorSchema,
         },
-        422: {},
+        401: {
+            "description": "unauthorized",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "success": False,
+                       	"error": {
+		                    "type": "invalid_credentials",
+		                    "description": "invalid credentials"
+	                    }
+                    },
+                },
+            },
+        },
+        422:{}
     },
 )
 
