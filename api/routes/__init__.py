@@ -160,15 +160,15 @@ app_router.include_router(
                 "application/json": {
                     "example": {
                         "success": False,
-                       	"error": {
-		                    "type": "invalid_credentials",
-		                    "description": "invalid credentials"
-	                    }
+                        "error": {
+                            "type": "invalid_credentials",
+                            "description": "invalid credentials",
+                        },
                     },
                 },
             },
         },
-        422:{}
+        422: {},
     },
 )
 

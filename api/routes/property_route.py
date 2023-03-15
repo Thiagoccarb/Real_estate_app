@@ -64,7 +64,7 @@ property_router.add_api_route(
             },
         },
         201: {
-            "description": "N\A",
+            "description": "Not Available",
         },
     },
 )
