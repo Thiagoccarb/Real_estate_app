@@ -24,8 +24,8 @@ class CreatePropertyResponse(BaseResponse):
 
 
 class PropertyData(Property):
-    id: Optional[int] = 1
-    image_ids: List[Any] = []
+    id: Optional[int]
+    image_urls: List[Any] = []
 
     class Config:
         orm_mode: True

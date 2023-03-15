@@ -50,9 +50,9 @@ class PropertiesRepository(AbstractPropertiesRepository):
     async def find_all(self) -> List[PropertyData]:
         async with self.session.begin():
             subquery = (
-                select(func.group_concat(mappings.Image.id))
+                select(func.group_concat(mappings.Image.url))
                 .where(mappings.Image.property_id == mappings.Property.id)
-                .label("image_ids")
+                .label("image_urls")
             )
             query = select(
                 mappings.Property.id,
@@ -70,10 +70,10 @@ class PropertiesRepository(AbstractPropertiesRepository):
                     **{
                         "id": item.id,
                         "name": item.name,
-                        "image_ids": [
-                            int(image_id) for image_id in item.image_ids.split(",")
+                        "image_urls": [
+                            str(url) for url in item.image_urls.split(",") if url
                         ]
-                        if item.image_ids
+                        if item.image_urls
                         else [],
                         "action": item.action,
                         "type": item.type,
