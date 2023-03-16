@@ -6,6 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import func
 from sqlalchemy.orm import selectinload
 
+from schemas.base import ListPropertyQueries
 from database.dtos.properties_dtos import CreateProperty
 from schemas.property_schemas import Property, PropertyData
 from database import mappings
@@ -22,7 +23,7 @@ class AbstractPropertiesRepository(ABC):
         raise NotImplementedError()
 
     @abstractmethod
-    async def find_all(self) -> List[Property]:
+    async def find_all(self, queries: ListPropertyQueries) -> List[PropertyData]:
         raise NotImplementedError()
 
 
@@ -47,7 +48,7 @@ class PropertiesRepository(AbstractPropertiesRepository):
         property = Property.from_orm(property) if property is not None else None
         return property
 
-    async def find_all(self) -> List[PropertyData]:
+    async def find_all(self, queries: ListPropertyQueries) -> List[PropertyData]:
         async with self.session.begin():
             subquery = (
                 select(func.group_concat(mappings.Image.url))
@@ -63,6 +64,11 @@ class PropertiesRepository(AbstractPropertiesRepository):
                 mappings.Property.created_at,
                 mappings.Property.updated_at,
             ).add_columns(subquery)
+            for q, v in queries.dict().items():
+                if v:
+                    column = getattr(mappings.Property, q)
+                    query = query.where(column == v)
+            print(query)
             result = await self.session.execute(query)
 
             properties = [

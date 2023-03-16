@@ -1,6 +1,7 @@
-from typing import List
-from fastapi import Depends
+from typing import List, Optional
+from fastapi import Depends, Query
 
+from schemas.base import ListPropertyQueries
 from services.auth.auth import AuthService
 from services.property.add_property_service import AddPropertyService
 from schemas.property_schemas import (
@@ -25,7 +26,11 @@ class PropertyController:
 
     async def find_all(
         self,
+        id: Optional[int] = Query(None),
+        type: Optional[str] = Query(None, regex="^(apartment|house)$"),
+        action: Optional[str] = Query(None, regex="^(rent|sale)$"),
         list_property_service: ListPropertyService = Depends(ListPropertyService),
     ) -> CreatePropertyResponse:
-        properties: List[Property] = await list_property_service.execute()
+        queries = ListPropertyQueries(id=id, type=type, action=action)
+        properties: List[Property] = await list_property_service.execute(queries)
         return ListPropertyResponse(result=properties)

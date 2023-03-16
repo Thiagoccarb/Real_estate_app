@@ -31,3 +31,9 @@ class MissingFieldErrorSchema(BaseModel):
                 },
             }
         }
+
+
+class ListPropertyQueries(BaseModel):
+    id: Optional[int]
+    type: Optional[str]
+    action: Optional[str]
