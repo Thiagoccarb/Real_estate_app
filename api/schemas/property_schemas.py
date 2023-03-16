@@ -1,3 +1,4 @@
+from typing import List, Any, Optional
 from pydantic_sqlalchemy import sqlalchemy_to_pydantic
 
 from schemas.base import BaseResponse
@@ -20,3 +21,15 @@ class CreatePropertyRequest(CreateProperty):
 
 class CreatePropertyResponse(BaseResponse):
     result: Property
+
+
+class PropertyData(Property):
+    id: Optional[int]
+    image_urls: List[Any] = []
+
+    class Config:
+        orm_mode: True
+
+
+class ListPropertyResponse(BaseResponse):
+    result: List[PropertyData]
