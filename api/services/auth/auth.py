@@ -1,7 +1,7 @@
 import os
 import re
 from typing import Optional
-from fastapi import Depends, Header
+from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 import jwt
 from datetime import datetime, timedelta
@@ -62,8 +62,8 @@ class AuthService:
             raise StatusError("invalid token", 401, "unauthorized_user")
 
     async def execute(
-        self, request: Optional[UserCredentialsRequest] = None, decode: bool = True
+        self,authorization: Optional[str], request: Optional[UserCredentialsRequest] = None, decode: bool = True
     ):
         if decode:
-            return await self._decode_token(authorization=Header(None))
+            return await self._decode_token(authorization)
         return await self._create_access_token(request.email, request.password)

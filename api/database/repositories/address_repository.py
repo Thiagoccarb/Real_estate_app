@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from fastapi import Depends
 from typing import Union
-from sqlalchemy.sql import select
+from sqlalchemy.sql import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from database.dtos.addresses_dtos import CreateAddress
@@ -17,6 +17,10 @@ class AbstractAddressesRepository(ABC):
 
     @abstractmethod
     async def find_by_id(self, id: int) -> Union[Address, None]:
+        raise NotImplementedError()
+
+    @abstractmethod
+    async def remove_by_id(self, id: int) -> None:
         raise NotImplementedError()
 
 
@@ -40,3 +44,10 @@ class AddressesRepository(AbstractAddressesRepository):
         address = address.scalar()
         address = Address.from_orm(address) if address is not None else None
         return address
+
+    async def remove_by_id(self, id: int) -> None:
+        async with self.session.begin():
+            await self.session.execute(
+                delete(mappings.Address).where(mappings.Address.id == id)
+            )
+            await self.session.commit()

@@ -1,7 +1,6 @@
 from fastapi.routing import APIRouter
 
-from schemas.base import MissingFieldErrorSchema
-from schemas.property_schemas import CreatePropertyResponse, ListPropertyResponse
+from schemas.property_schemas import CreatePropertyResponse, ListPropertyResponse, RemovePropertyResponse
 from controllers.property_controller import PropertyController
 
 
@@ -17,6 +16,15 @@ property_router.add_api_route(
     status_code=201,
     response_model=CreatePropertyResponse,
 )
+
+property_router.add_api_route(
+    "/{id}",
+    property_controller.remove,
+    methods=["DELETE"],
+    status_code=200,
+    response_model=RemovePropertyResponse,
+)
+
 
 property_router.add_api_route(
     "",

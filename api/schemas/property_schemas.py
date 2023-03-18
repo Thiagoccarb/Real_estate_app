@@ -26,6 +26,9 @@ class CreatePropertyResponse(BaseResponse):
     result: Property
 
 
+class RemovePropertyResponse(BaseResponse):
+    pass
+    
 class PropertyData(Property):
     id: Optional[int]
     image_urls: List[Any] = []

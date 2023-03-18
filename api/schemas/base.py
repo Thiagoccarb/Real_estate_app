@@ -5,7 +5,8 @@ from pydantic import BaseModel
 class BaseResponse(BaseModel):
     success: Optional[bool] = True
     error: Optional[Any] = None
-    result: Optional[Any]
+    result: Optional[Any] = None
+    message: Optional[str] = None
 
 
 class BasePaginatedResponse(BaseResponse):

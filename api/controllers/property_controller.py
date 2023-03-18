@@ -1,16 +1,18 @@
 from typing import Optional
-from fastapi import Depends, Query, Request
+from fastapi import Depends, Header, Query, Request
 
 from errors.status_error import StatusError
 from utils.pagination import get_pagination_links
 from schemas.base import ListPropertyQueries
 from services.auth.auth import AuthService
+from services.property.remove_property_service import RemovePropertyService
 from services.property.add_property_service import AddPropertyService
 from schemas.property_schemas import (
     CreatePropertyRequest,
     CreatePropertyResponse,
     ListPropertyResponse,
     Property,
+    RemovePropertyResponse,
 )
 from services.property.list_property_service import ListPropertyService
 
@@ -21,8 +23,9 @@ class PropertyController:
         request: CreatePropertyRequest,
         add_property_service: AddPropertyService = Depends(AddPropertyService),
         auth_service: AuthService = Depends(AuthService),
+        authorization = Header(None)
     ) -> CreatePropertyResponse:
-        await auth_service.execute(decode=True)
+        await auth_service.execute(authorization, decode=True)
         new_property: Property = await add_property_service.execute(request)
         return CreatePropertyResponse(result=new_property)
 
@@ -49,3 +52,14 @@ class PropertyController:
         return ListPropertyResponse(
             result=properties, next_page=next_page, previous_page=previous_page
         )
+
+    async def remove(
+        self,
+        id: int = Query(..., gt=0),
+        add_property_service: RemovePropertyService = Depends(RemovePropertyService),
+        auth_service: AuthService = Depends(AuthService),
+        authorization = Header(None)
+    ) -> RemovePropertyResponse:
+        await auth_service.execute(authorization = authorization, decode=True)
+        await add_property_service.execute(id)
+        return RemovePropertyResponse(message=f'property with `id` {id} has been removed')

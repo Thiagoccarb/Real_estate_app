@@ -1,10 +1,9 @@
 from abc import ABC, abstractmethod
 from fastapi import Depends
 from typing import List, Tuple, Union
-from sqlalchemy.sql import select
+from sqlalchemy.sql import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import func
-from sqlalchemy.orm import selectinload
 
 from schemas.base import ListPropertyQueries
 from database.dtos.properties_dtos import CreateProperty
@@ -101,3 +100,10 @@ class PropertiesRepository(AbstractPropertiesRepository):
             count_result = await self.session.execute(count_query)
             total_count = count_result.scalar()
         return properties, total_count
+    
+    async def remove_by_id(self, id: int) -> None:
+        async with self.session.begin():
+            await self.session.execute(
+                delete(mappings.Property).where(mappings.Property.id == id)
+            )
+            await self.session.commit()
