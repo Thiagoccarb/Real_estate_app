@@ -14,9 +14,10 @@ async def handle_validation_error(_: Request, exc: RequestValidationError):
                 msgs = [error["msg"] for error in exc.errors()]
                 fields = [field["loc"][1] for field in exc.errors()]
                 description = [
-                    item.replace("string", f'`{fields[i]}`') for i, item in enumerate(msgs)
+                    item.replace("string", f"`{fields[i]}`")
+                    for i, item in enumerate(msgs)
                 ]
-                description = ", ".join(description).replace('\"','').rstrip(", ")
+                description = ", ".join(description).replace('"', "").rstrip(", ")
                 return JSONResponse(
                     status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                     content={
