@@ -13,7 +13,6 @@ from schemas.property_schemas import (
     Property,
 )
 from services.property.list_property_service import ListPropertyService
-from database import get_db
 
 
 class PropertyController:
@@ -34,13 +33,19 @@ class PropertyController:
         type: Optional[str] = Query(None, regex="^(apartment|house)$"),
         action: Optional[str] = Query(None, regex="^(rent|sale)$"),
         sort: Optional[str] = Query(None, regex="^(name)$"),
-        offset: int = Query(0, ge=0), 
+        offset: int = Query(0, ge=0),
         limit: int = Query(10, gt=0),
         list_property_service: ListPropertyService = Depends(ListPropertyService),
     ) -> ListPropertyResponse:
         if limit > 50:
-            raise StatusError('Query limit must be no greater than 50', 400, 'invalid_query-limit')
-        queries = ListPropertyQueries(id=id, type=type, action=action, sort=sort, offset=offset, limit=limit)
+            raise StatusError(
+                "Query limit must be no greater than 50", 400, "invalid_query-limit"
+            )
+        queries = ListPropertyQueries(
+            id=id, type=type, action=action, sort=sort, offset=offset, limit=limit
+        )
         properties, count = await list_property_service.execute(queries)
-        next_page, previous_page= await get_pagination_links(request, count)
-        return ListPropertyResponse(result=properties, next_page=next_page, previous_page=previous_page)
+        next_page, previous_page = await get_pagination_links(request, count)
+        return ListPropertyResponse(
+            result=properties, next_page=next_page, previous_page=previous_page
+        )

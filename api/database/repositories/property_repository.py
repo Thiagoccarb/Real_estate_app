@@ -48,7 +48,9 @@ class PropertiesRepository(AbstractPropertiesRepository):
         property = Property.from_orm(property) if property is not None else None
         return property
 
-    async def find_all(self, queries: ListPropertyQueries) -> Tuple[List[Property], int]:
+    async def find_all(
+        self, queries: ListPropertyQueries
+    ) -> Tuple[List[Property], int]:
         async with self.session.begin():
             subquery = (
                 select(func.group_concat(mappings.Image.url))
@@ -65,14 +67,14 @@ class PropertiesRepository(AbstractPropertiesRepository):
                 mappings.Property.updated_at,
             ).add_columns(subquery)
             for q, v in queries.dict().items():
-                if not v or q in ('sort', 'limit', 'offset'):
+                if not v or q in ("sort", "limit", "offset"):
                     continue
                 column = getattr(mappings.Property, q)
                 query = query.where(column == v)
             if queries.sort:
                 sort_column = getattr(mappings.Property, queries.sort)
                 query = query.order_by(sort_column)
-            
+
             query = query.offset(queries.offset).limit(queries.limit)
             result = await self.session.execute(query)
             properties = [

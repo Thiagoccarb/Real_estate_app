@@ -13,6 +13,6 @@ class ListPropertyService:
     ):
         self.property_repository = property_repository
 
-    async def execute(self, queries: ListPropertyQueries) ->Tuple[List[Property], int]:
+    async def execute(self, queries: ListPropertyQueries) -> Tuple[List[Property], int]:
         properties, count = await self.property_repository.find_all(queries)
         return properties, count

@@ -15,6 +15,9 @@ class CreatePropertyRequest(CreateProperty):
         schema_extra = {
             "example": {
                 "name": "house 2",
+                "action": "rent",
+                "type": "apartment",
+                "address_id": 10,
             }
         }
 

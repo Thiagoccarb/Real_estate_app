@@ -66,5 +66,18 @@ property_router.add_api_route(
         201: {
             "description": "Not Available",
         },
+        400: {
+            "description": "invalid_query",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "success": True,
+                        "error": {
+                            "description": "Query limit must be no greater than 50"
+                        },
+                    },
+                }
+            },
+        },
     },
 )
