@@ -10,13 +10,13 @@ async def handle_validation_error(_: Request, exc: RequestValidationError):
     for error in exc.errors():
         try:
             msg = error["msg"]
-            if "match regex" in msg:
+            if "regex" in error["type"]:
                 msgs = [error["msg"] for error in exc.errors()]
                 fields = [field["loc"][1] for field in exc.errors()]
                 description = [
-                    item.replace("string", fields[i]) for i, item in enumerate(msgs)
+                    item.replace("string", f'`{fields[i]}`') for i, item in enumerate(msgs)
                 ]
-                description = str(",".join(description).replace(",", ", ") + ".")
+                description = ", ".join(description).replace('\"','').rstrip(", ")
                 return JSONResponse(
                     status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
                     content={
@@ -65,7 +65,7 @@ async def handle_validation_error(_: Request, exc: RequestValidationError):
         except Exception as e:
             print(e)
             return JSONResponse(
-                status_code=status.HTTP_400_BAD_REQUEST,
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 content={
                     "success": False,
                     "error": {

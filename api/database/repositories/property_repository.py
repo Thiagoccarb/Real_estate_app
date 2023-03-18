@@ -68,7 +68,6 @@ class PropertiesRepository(AbstractPropertiesRepository):
                 if v:
                     column = getattr(mappings.Property, q)
                     query = query.where(column == v)
-            print(query)
             result = await self.session.execute(query)
 
             properties = [
