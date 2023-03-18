@@ -1,6 +1,8 @@
-from typing import List, Optional
-from fastapi import Depends, Query
+from typing import Optional
+from fastapi import Depends, Query, Request
 
+from errors.status_error import StatusError
+from utils.pagination import get_pagination_links
 from schemas.base import ListPropertyQueries
 from services.auth.auth import AuthService
 from services.property.add_property_service import AddPropertyService
@@ -11,6 +13,7 @@ from schemas.property_schemas import (
     Property,
 )
 from services.property.list_property_service import ListPropertyService
+from database import get_db
 
 
 class PropertyController:
@@ -26,11 +29,18 @@ class PropertyController:
 
     async def find_all(
         self,
+        request: Request,
         id: Optional[int] = Query(None),
         type: Optional[str] = Query(None, regex="^(apartment|house)$"),
         action: Optional[str] = Query(None, regex="^(rent|sale)$"),
+        sort: Optional[str] = Query(None, regex="^(name)$"),
+        offset: int = Query(0, ge=0), 
+        limit: int = Query(10, gt=0),
         list_property_service: ListPropertyService = Depends(ListPropertyService),
-    ) -> CreatePropertyResponse:
-        queries = ListPropertyQueries(id=id, type=type, action=action)
-        properties: List[Property] = await list_property_service.execute(queries)
-        return ListPropertyResponse(result=properties)
+    ) -> ListPropertyResponse:
+        if limit > 50:
+            raise StatusError('Query limit must be no greater than 50', 400, 'invalid_query-limit')
+        queries = ListPropertyQueries(id=id, type=type, action=action, sort=sort, offset=offset, limit=limit)
+        properties, count = await list_property_service.execute(queries)
+        next_page, previous_page= await get_pagination_links(request, count)
+        return ListPropertyResponse(result=properties, next_page=next_page, previous_page=previous_page)

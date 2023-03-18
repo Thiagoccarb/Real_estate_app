@@ -1,7 +1,7 @@
 from typing import List, Any, Optional
 from pydantic_sqlalchemy import sqlalchemy_to_pydantic
 
-from schemas.base import BaseResponse
+from schemas.base import BasePaginatedResponse, BaseResponse
 from database import mappings
 from database.dtos.properties_dtos import CreateProperty
 
@@ -31,5 +31,5 @@ class PropertyData(Property):
         orm_mode: True
 
 
-class ListPropertyResponse(BaseResponse):
+class ListPropertyResponse(BasePaginatedResponse):
     result: List[PropertyData]

@@ -6,7 +6,10 @@ class BaseResponse(BaseModel):
     success: Optional[bool] = True
     error: Optional[Any] = None
     result: Optional[Any]
-
+    
+class BasePaginatedResponse(BaseResponse):
+    next_page: Optional[str]
+    previous_page: Optional[str]
 
 class Error(BaseModel):
     type: str
@@ -37,3 +40,6 @@ class ListPropertyQueries(BaseModel):
     id: Optional[int]
     type: Optional[str]
     action: Optional[str]
+    sort: Optional[str]
+    offset: Optional[int]
+    limit: Optional[int]

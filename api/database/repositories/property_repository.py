@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from fastapi import Depends
-from typing import List, Union
+from typing import List, Tuple, Union
 from sqlalchemy.sql import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import func
@@ -48,7 +48,7 @@ class PropertiesRepository(AbstractPropertiesRepository):
         property = Property.from_orm(property) if property is not None else None
         return property
 
-    async def find_all(self, queries: ListPropertyQueries) -> List[PropertyData]:
+    async def find_all(self, queries: ListPropertyQueries) -> Tuple[List[Property], int]:
         async with self.session.begin():
             subquery = (
                 select(func.group_concat(mappings.Image.url))
@@ -65,11 +65,16 @@ class PropertiesRepository(AbstractPropertiesRepository):
                 mappings.Property.updated_at,
             ).add_columns(subquery)
             for q, v in queries.dict().items():
-                if v:
-                    column = getattr(mappings.Property, q)
-                    query = query.where(column == v)
+                if not v or q in ('sort', 'limit', 'offset'):
+                    continue
+                column = getattr(mappings.Property, q)
+                query = query.where(column == v)
+            if queries.sort:
+                sort_column = getattr(mappings.Property, queries.sort)
+                query = query.order_by(sort_column)
+            
+            query = query.offset(queries.offset).limit(queries.limit)
             result = await self.session.execute(query)
-
             properties = [
                 PropertyData(
                     **{
@@ -89,5 +94,8 @@ class PropertiesRepository(AbstractPropertiesRepository):
                 )
                 for item in result.fetchall()
             ]
-
-        return properties
+        count_query = select(func.count(mappings.Property.id))
+        async with self.session.begin():
+            count_result = await self.session.execute(count_query)
+            total_count = count_result.scalar()
+        return properties, total_count
