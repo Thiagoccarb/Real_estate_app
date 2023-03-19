@@ -21,5 +21,6 @@ class RemovePropertyService:
             raise StatusError(
                 "Property with `id` {id} not found", 404, "not_found", id=id
             )
-        await self.address_repository.remove_by_id(existing_property.address_id)
+        print(existing_property)
         await self.property_repository.remove_by_id(id)
+        await self.address_repository.remove_by_id(existing_property.address_id)
