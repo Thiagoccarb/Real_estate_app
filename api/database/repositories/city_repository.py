@@ -41,19 +41,12 @@ class CitiesRepository(AbstractCitiesRepository):
         city = City.from_orm(city) if city is not None else None
         return city
 
-    async def find_by(self, queries: Dict[str, str]) -> Union[List[City], None]:
+    async def find_by(self, queries: Dict[str, str]) -> Union[City, None]:
         async with self.session.begin():
-            if not queries:
-                cities_cursor = select(mappings.City)
-                cities = await self.session.execute(cities_cursor)
-                cities = cities.fetchall()
-                cities = [City.from_orm(city) for city in cities]
-                return cities
-            else:
-                city_cursor = select(mappings.City)
-                for key, value in queries.items():
-                    city_cursor = city_cursor.where(
-                        getattr(mappings.City, key) == value
-                    )
-                city = await city_cursor.scalar()
-                return City.from_orm(city) if city is not None else None
+            query =  select(mappings.City)
+            for key, value in queries.items():
+                query = query.where(getattr(mappings.City,key) == value)
+            city = await self.session.execute(query)
+        city = city.scalar()
+        city = City.from_orm(city) if city is not None else None
+        return city

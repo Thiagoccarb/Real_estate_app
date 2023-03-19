@@ -1,17 +1,19 @@
 from typing import Optional
+from pydantic import BaseModel
 from pydantic_sqlalchemy import sqlalchemy_to_pydantic
 
-from errors.status_error import StatusError
 from schemas.base import BaseResponse
-from database.dtos.addresses_dtos import CreateAddress
+from database.dtos.cities_dtos import CreateCity
 from database import mappings
 
 Address = sqlalchemy_to_pydantic(mappings.Address)
 
 
-class CreateAddressRequest(CreateAddress):
+class CreateAddressRequest(BaseModel):
+    street_name: str
     number: Optional[int]
     cep: str
+    city_data: CreateCity
 
     class Config:
         schema_extra = {

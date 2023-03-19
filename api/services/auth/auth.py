@@ -63,7 +63,7 @@ class AuthService:
 
     async def execute(
         self,
-        authorization: Optional[str],
+        authorization: Optional[str] = None,
         request: Optional[UserCredentialsRequest] = None,
         decode: bool = True,
     ):

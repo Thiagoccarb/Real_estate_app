@@ -1,10 +1,11 @@
 from fastapi import Depends
 import re
 
+from database.mappings import City
+from database.dtos.addresses_dtos import CreateAddress
+from database.dtos.cities_dtos import CreateCity
 from schemas.address_schema import CreateAddressRequest, Address
 from database.repositories.city_repository import CitiesRepository
-from database.dtos.images_dtos import CreateImage
-from schemas.image_schemas import CreatedImageData
 from database.repositories.address_repository import AddressesRepository
 from errors.status_error import StatusError
 
@@ -19,7 +20,9 @@ class AddAddressService:
         self.city_repository = city_repository
 
     async def execute(self, request: CreateAddressRequest) -> Address:
-        existing_city = await self.city_repository.find_by_id(id=request.city_id)
+        city: City = await self.city_repository.find_by({'name': request.city_data.name, 'state': request.city_data.state})
+        if not city:
+            city = await self.city_repository.add(CreateCity(name=request.city_data.name, state=request.city_data.state))
         pattern = r"^\d{5}(-\d{3})?$"
         match = re.match(pattern, request.cep)
         if not match:
@@ -28,11 +31,10 @@ class AddAddressService:
                 422,
                 "unprocessable_entity",
             )
-
-        if not existing_city:
-            raise StatusError(
-                f"city with `id` {request.city_id} not found", 404, "not_found"
-            )
-
-        new_address = await self.address_repository.add(request)
+        new_address = await self.address_repository.add(CreateAddress(
+            street_name=request.street_name,
+            city_id=city.id,
+            number=request.number,
+            cep=request.cep,
+        ))
         return new_address
