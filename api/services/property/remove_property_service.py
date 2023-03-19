@@ -18,7 +18,8 @@ class RemovePropertyService:
     async def execute(self, id: int) -> None:
         existing_property: Property = await self.property_repository.find_by_id(id)
         if not existing_property:
-            raise StatusError('Property with `id` {id} not found', 404, 'not_found', id = id)
+            raise StatusError(
+                "Property with `id` {id} not found", 404, "not_found", id=id
+            )
         await self.address_repository.remove_by_id(existing_property.address_id)
         await self.property_repository.remove_by_id(id)
-        

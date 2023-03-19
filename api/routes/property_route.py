@@ -1,6 +1,12 @@
 from fastapi.routing import APIRouter
 
-from schemas.property_schemas import CreatePropertyResponse, ListPropertyResponse, RemovePropertyResponse
+from schemas.property_schemas import (
+    CreatePropertyResponse,
+    ListPropertyResponse,
+    RemovePropertyResponse,
+    UpdatePropertyRequest,
+    UpdatePropertyResponse,
+)
 from controllers.property_controller import PropertyController
 
 
@@ -19,12 +25,19 @@ property_router.add_api_route(
 
 property_router.add_api_route(
     "/{id}",
-    property_controller.remove,
+    property_controller.remove_by_id,
     methods=["DELETE"],
     status_code=200,
     response_model=RemovePropertyResponse,
 )
 
+property_router.add_api_route(
+    "/{id}",
+    property_controller.update_by_id,
+    methods=["PATCH"],
+    status_code=200,
+    response_model=UpdatePropertyResponse,
+)
 
 property_router.add_api_route(
     "",

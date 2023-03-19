@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import func
 
 from schemas.base import ListPropertyQueries
-from database.dtos.properties_dtos import CreateProperty
+from database.dtos.properties_dtos import CreateProperty, UpdateProperty
 from schemas.property_schemas import Property, PropertyData
 from database import mappings
 from database import get_db
@@ -23,6 +23,14 @@ class AbstractPropertiesRepository(ABC):
 
     @abstractmethod
     async def find_all(self, queries: ListPropertyQueries) -> List[PropertyData]:
+        raise NotImplementedError()
+
+    @abstractmethod
+    async def update_by_id(self, id: int, data: UpdateProperty) -> Property:
+        raise NotImplementedError()
+
+    @abstractmethod
+    async def remove_by_id(self, id: int, data: UpdateProperty) -> None:
         raise NotImplementedError()
 
 
@@ -100,10 +108,21 @@ class PropertiesRepository(AbstractPropertiesRepository):
             count_result = await self.session.execute(count_query)
             total_count = count_result.scalar()
         return properties, total_count
-    
+
     async def remove_by_id(self, id: int) -> None:
         async with self.session.begin():
             await self.session.execute(
                 delete(mappings.Property).where(mappings.Property.id == id)
             )
             await self.session.commit()
+
+    async def update_by_id(self, id: int, data: UpdateProperty) -> Property:
+        async with self.session.begin():
+            property_orm = await self.session.get(mappings.Property, id)
+
+            for field, value in data.dict(exclude_none=True).items():
+                setattr(property_orm, field, value)
+
+            await self.session.commit()
+
+        return Property.from_orm(property_orm)

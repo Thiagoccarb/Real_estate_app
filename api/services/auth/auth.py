@@ -62,7 +62,10 @@ class AuthService:
             raise StatusError("invalid token", 401, "unauthorized_user")
 
     async def execute(
-        self,authorization: Optional[str], request: Optional[UserCredentialsRequest] = None, decode: bool = True
+        self,
+        authorization: Optional[str],
+        request: Optional[UserCredentialsRequest] = None,
+        decode: bool = True,
     ):
         if decode:
             return await self._decode_token(authorization)
