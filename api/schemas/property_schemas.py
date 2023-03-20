@@ -6,7 +6,7 @@ import datetime
 from schemas.base import BasePaginatedResponse, BaseResponse
 from database import mappings
 from database.dtos.properties_dtos import UpdateProperty
-from database.dtos.addresses_dtos import CreateAddress
+from database.dtos.addresses_dtos import CreateAddressWithoutId
 from database.dtos.cities_dtos import CreateCity
 
 Property = sqlalchemy_to_pydantic(mappings.Property)
@@ -16,7 +16,7 @@ class CreatePropertyRequest(BaseModel):
     name: str
     action: str
     type: str
-    address: CreateAddress
+    address: CreateAddressWithoutId
     city: CreateCity
     pass
 
@@ -67,7 +67,8 @@ class RemovePropertyResponse(BaseResponse):
 class PropertyData(Property):
     id: Optional[int]
     image_urls: List[Any] = []
-
+    address: CreateAddressWithoutId
+    city: CreateCity
     class Config:
         orm_mode: True
 

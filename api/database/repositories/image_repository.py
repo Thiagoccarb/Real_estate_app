@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.sql import delete
 
 from database.dtos.images_dtos import CreateImage
 from schemas.image_schemas import CreatedImageData
@@ -13,6 +14,9 @@ class AbstractImagesRepository(ABC):
     async def add(self, data: CreateImage) -> CreatedImageData:
         raise NotImplementedError()
 
+    @abstractmethod
+    async def remove_by_property_id(self, property_id: int) -> None:
+        raise NotImplementedError()
 
 class ImagesRepository(AbstractImagesRepository):
     def __init__(self, session: AsyncSession = Depends(get_db)):
@@ -25,3 +29,10 @@ class ImagesRepository(AbstractImagesRepository):
 
         await self.session.refresh(image)
         return CreatedImageData(**{"id": image.id, "created_at": image.created_at})
+
+    async def remove_by_property_id(self, property_id: int) -> None:
+        async with self.session.begin():
+            await self.session.execute(
+                delete(mappings.Image).where(mappings.Image.property_id == property_id)
+            )
+            await self.session.commit()

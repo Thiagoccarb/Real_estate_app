@@ -56,14 +56,9 @@ class PropertiesRepository(AbstractPropertiesRepository):
         return property
 
     async def find_all(
-        self, queries: ListPropertyQueries
+    self, queries: ListPropertyQueries
     ) -> Tuple[List[Property], int]:
         async with self.session.begin():
-            subquery = (
-                select(func.group_concat(mappings.Image.url))
-                .where(mappings.Image.property_id == mappings.Property.id)
-                .label("image_urls")
-            )
             query = select(
                 mappings.Property.id,
                 mappings.Property.name,
@@ -72,7 +67,14 @@ class PropertiesRepository(AbstractPropertiesRepository):
                 mappings.Property.address_id,
                 mappings.Property.created_at,
                 mappings.Property.updated_at,
-            ).add_columns(subquery)
+                mappings.Address.street_name,
+                mappings.Address.cep,
+                mappings.Address.number,
+                mappings.City.name.label("city_name"),
+                mappings.City.state,
+            ).select_from(mappings.Property).join(
+                mappings.Address, mappings.Property.address_id == mappings.Address.id
+            ).join(mappings.City, mappings.Address.city_id == mappings.City.id)
             for q, v in queries.dict().items():
                 if not v or q in ("sort", "limit", "offset"):
                     continue
@@ -83,31 +85,49 @@ class PropertiesRepository(AbstractPropertiesRepository):
                 query = query.order_by(sort_column)
 
             query = query.offset(queries.offset).limit(queries.limit)
+            print(queries.offset, queries.limit)
+            print(query)
             result = await self.session.execute(query)
-            properties = [
-                PropertyData(
-                    **{
-                        "id": item.id,
-                        "name": item.name,
-                        "image_urls": [
-                            str(url) for url in item.image_urls.split(",") if url
-                        ]
-                        if item.image_urls
-                        else [],
-                        "action": item.action,
-                        "type": item.type,
-                        "address_id": item.address_id,
-                        "created_at": item.created_at,
-                        "updated_at": item.updated_at,
-                    }
+            properties = []
+            for item in result.fetchall():
+                property_data = {
+                    "id": item.id,
+                    "name": item.name,
+                    "action": item.action,
+                    "type": item.type,
+                    "address_id": item.address_id,
+                    "created_at": item.created_at,
+                    "updated_at": item.updated_at,
+                    "address": {
+                        "cep": item.cep,
+                        "street_name": item.street_name,
+                        "number": item.number,
+                    },
+                    "city": {
+                        "name": item.city_name,
+                        "state": item.state,
+                    },
+                }
+
+                # Query for the image URLs
+                image_query = select(mappings.Image.url).where(
+                    mappings.Image.property_id == item.id
                 )
-                for item in result.fetchall()
-            ]
+                image_result = await self.session.execute(image_query)
+                image_urls = [str(url) for url in image_result.scalars()]
+
+                # Add the image URLs to the property data
+                property_data["image_urls"] = image_urls
+
+                properties.append(PropertyData(**property_data))
+
         count_query = select(func.count(mappings.Property.id))
         async with self.session.begin():
             count_result = await self.session.execute(count_query)
             total_count = count_result.scalar()
+            print(total_count)
         return properties, total_count
+
 
     async def remove_by_id(self, id: int) -> None:
         async with self.session.begin():
