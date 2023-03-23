@@ -18,6 +18,7 @@ class AbstractImagesRepository(ABC):
     async def remove_by_property_id(self, property_id: int) -> None:
         raise NotImplementedError()
 
+
 class ImagesRepository(AbstractImagesRepository):
     def __init__(self, session: AsyncSession = Depends(get_db)):
         self.session = session

@@ -37,6 +37,22 @@ property_router.add_api_route(
     methods=["PATCH"],
     status_code=200,
     response_model=UpdatePropertyResponse,
+    responses={
+        200: {
+            "success": True,
+            "error": None,
+            "result": {
+                "name": "property",
+                "action": "rent",
+                "type": "apartment",
+                "address": {"street_name": "test", "cep": "11111-111"},
+                "city": {"name": "São Paulo", "state": "SP"},
+            },
+            "message": None,
+        },
+        201: {},
+        422: {},
+    },
 )
 
 property_router.add_api_route(

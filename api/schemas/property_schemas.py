@@ -5,9 +5,8 @@ import datetime
 
 from schemas.base import BasePaginatedResponse, BaseResponse
 from database import mappings
-from database.dtos.properties_dtos import UpdateProperty
-from database.dtos.addresses_dtos import CreateAddressWithoutId
-from database.dtos.cities_dtos import CreateCity
+from database.dtos.addresses_dtos import CreateAddressWithoutId, UpdateAddress
+from database.dtos.cities_dtos import CreateCity, UpdateCity
 
 Property = sqlalchemy_to_pydantic(mappings.Property)
 
@@ -23,31 +22,31 @@ class CreatePropertyRequest(BaseModel):
     class Config:
         schema_extra = {
             "example": {
-                    "name":"property",
-                    "action": "rent",
-                    "type": "apartment",
-                    "address":	{
-                        "street_name": "test",
-                        "cep": "11111-111"
-                    },
-                    "city": {
-                        "name": "São Paulo",
-                        "state": "SP"
-                    }
-                }
+                "name": "property",
+                "action": "rent",
+                "type": "apartment",
+                "address": {"street_name": "test", "cep": "11111-111"},
+                "city": {"name": "São Paulo", "state": "SP"},
             }
-        
+        }
 
 
-class UpdatePropertyRequest(UpdateProperty):
+class UpdatePropertyRequest(BaseModel):
     updated_at: Optional[datetime.datetime] = datetime.datetime.now()
+    name: Optional[str]
+    action: Optional[str]
+    type: Optional[str]
+    address: Optional[UpdateAddress]
+    city: Optional[UpdateCity]
 
     class Config:
         schema_extra = {
             "example": {
-                "name": "house 2",
+                "name": "property",
                 "action": "rent",
                 "type": "apartment",
+                "address": {"street_name": "test", "cep": "11111-111"},
+                "city": {"name": "São Paulo", "state": "SP"},
             }
         }
 
@@ -56,7 +55,7 @@ class CreatePropertyResponse(BaseResponse):
     result: Property
 
 
-class UpdatePropertyResponse(CreatePropertyResponse):
+class UpdatedProperty(UpdatePropertyRequest):
     pass
 
 
@@ -64,11 +63,16 @@ class RemovePropertyResponse(BaseResponse):
     pass
 
 
+class UpdatePropertyResponse(BaseResponse):
+    result: UpdatedProperty
+
+
 class PropertyData(Property):
     id: Optional[int]
     image_urls: List[Any] = []
     address: CreateAddressWithoutId
     city: CreateCity
+
     class Config:
         orm_mode: True
 

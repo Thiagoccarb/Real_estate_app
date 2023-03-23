@@ -20,9 +20,13 @@ class AddAddressService:
         self.city_repository = city_repository
 
     async def execute(self, request: CreateAddressRequest) -> Address:
-        city: City = await self.city_repository.find_by({'name': request.city_data.name, 'state': request.city_data.state})
+        city: City = await self.city_repository.find_by(
+            {"name": request.city_data.name, "state": request.city_data.state}
+        )
         if not city:
-            city = await self.city_repository.add(CreateCity(name=request.city_data.name, state=request.city_data.state))
+            city = await self.city_repository.add(
+                CreateCity(name=request.city_data.name, state=request.city_data.state)
+            )
         pattern = r"^\d{5}(-\d{3})?$"
         match = re.match(pattern, request.cep)
         if not match:
@@ -31,10 +35,12 @@ class AddAddressService:
                 422,
                 "unprocessable_entity",
             )
-        new_address = await self.address_repository.add(CreateAddress(
-            street_name=request.street_name,
-            city_id=city.id,
-            number=request.number,
-            cep=request.cep,
-        ))
+        new_address = await self.address_repository.add(
+            CreateAddress(
+                street_name=request.street_name,
+                city_id=city.id,
+                number=request.number,
+                cep=request.cep,
+            )
+        )
         return new_address

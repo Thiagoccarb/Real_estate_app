@@ -31,14 +31,21 @@ class AddPropertyService:
                 'field `action` must be "rent" or "sale"', 422, "unprocessable_entity"
             )
 
-        new_address = await self.add_address_service.execute(CreateAddressRequest(
-            street_name=request.address.street_name,
-            number=request.address.number,
-            cep=request.address.cep,
-            city_data=CreateCity(name=request.city.name, state=request.city.state)
-        ))
+        new_address = await self.add_address_service.execute(
+            CreateAddressRequest(
+                street_name=request.address.street_name,
+                number=request.address.number,
+                cep=request.address.cep,
+                city_data=CreateCity(name=request.city.name, state=request.city.state),
+            )
+        )
 
-        new_property = await self.property_repository.add(data=CreateProperty(
-            name=request.name, action=request.action, type=request.type, address_id=new_address.id
-        ))
+        new_property = await self.property_repository.add(
+            data=CreateProperty(
+                name=request.name,
+                action=request.action,
+                type=request.type,
+                address_id=new_address.id,
+            )
+        )
         return new_property

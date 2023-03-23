@@ -12,7 +12,7 @@ class RemovePropertyService:
         self,
         property_repository: PropertiesRepository = Depends(PropertiesRepository),
         address_repository: AddressesRepository = Depends(AddressesRepository),
-        image_repository: ImagesRepository = Depends(ImagesRepository)
+        image_repository: ImagesRepository = Depends(ImagesRepository),
     ):
         self.property_repository = property_repository
         self.address_repository = address_repository

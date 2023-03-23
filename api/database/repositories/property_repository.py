@@ -56,25 +56,31 @@ class PropertiesRepository(AbstractPropertiesRepository):
         return property
 
     async def find_all(
-    self, queries: ListPropertyQueries
+        self, queries: ListPropertyQueries
     ) -> Tuple[List[Property], int]:
         async with self.session.begin():
-            query = select(
-                mappings.Property.id,
-                mappings.Property.name,
-                mappings.Property.action,
-                mappings.Property.type,
-                mappings.Property.address_id,
-                mappings.Property.created_at,
-                mappings.Property.updated_at,
-                mappings.Address.street_name,
-                mappings.Address.cep,
-                mappings.Address.number,
-                mappings.City.name.label("city_name"),
-                mappings.City.state,
-            ).select_from(mappings.Property).join(
-                mappings.Address, mappings.Property.address_id == mappings.Address.id
-            ).join(mappings.City, mappings.Address.city_id == mappings.City.id)
+            query = (
+                select(
+                    mappings.Property.id,
+                    mappings.Property.name,
+                    mappings.Property.action,
+                    mappings.Property.type,
+                    mappings.Property.address_id,
+                    mappings.Property.created_at,
+                    mappings.Property.updated_at,
+                    mappings.Address.street_name,
+                    mappings.Address.cep,
+                    mappings.Address.number,
+                    mappings.City.name.label("city_name"),
+                    mappings.City.state,
+                )
+                .select_from(mappings.Property)
+                .join(
+                    mappings.Address,
+                    mappings.Property.address_id == mappings.Address.id,
+                )
+                .join(mappings.City, mappings.Address.city_id == mappings.City.id)
+            )
             for q, v in queries.dict().items():
                 if not v or q in ("sort", "limit", "offset"):
                     continue
@@ -125,9 +131,7 @@ class PropertiesRepository(AbstractPropertiesRepository):
         async with self.session.begin():
             count_result = await self.session.execute(count_query)
             total_count = count_result.scalar()
-            print(total_count)
         return properties, total_count
-
 
     async def remove_by_id(self, id: int) -> None:
         async with self.session.begin():
@@ -137,12 +141,11 @@ class PropertiesRepository(AbstractPropertiesRepository):
             await self.session.commit()
 
     async def update_by_id(self, id: int, data: UpdateProperty) -> Property:
-        async with self.session.begin():
-            property_orm = await self.session.get(mappings.Property, id)
+        property_orm = await self.session.get(mappings.Property, id)
 
-            for field, value in data.dict(exclude_none=True).items():
-                setattr(property_orm, field, value)
+        for field, value in data.dict(exclude_none=True).items():
+            setattr(property_orm, field, value)
 
-            await self.session.commit()
+        await self.session.commit()
 
         return Property.from_orm(property_orm)
