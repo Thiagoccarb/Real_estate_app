@@ -6,7 +6,6 @@ from typing import Tuple
 async def get_pagination_links(request: Request, count: int) -> Tuple[str, str]:
     url = str(request.url)
     url_components = urlsplit(url)
-
     query_params = dict(parse_qsl(url_components.query))
     limit = int(query_params.get("limit", 10))
     offset = int(query_params.get("offset", 0))
@@ -19,7 +18,7 @@ async def get_pagination_links(request: Request, count: int) -> Tuple[str, str]:
         "limit": str(limit),
     }
     next_url_components = url_components._replace(query=urlencode(next_query_params))
-    next_url = urlunsplit(next_url_components) if next_offset < count else None
+    next_url = urlunsplit(next_url_components) if count > next_offset else None
 
     # Compute previous page URL
     prev_offset = max(0, offset - limit)

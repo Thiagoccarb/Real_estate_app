@@ -91,8 +91,6 @@ class PropertiesRepository(AbstractPropertiesRepository):
                 query = query.order_by(sort_column)
 
             query = query.offset(queries.offset).limit(queries.limit)
-            print(queries.offset, queries.limit)
-            print(query)
             result = await self.session.execute(query)
             properties = []
             for item in result.fetchall():
@@ -127,10 +125,24 @@ class PropertiesRepository(AbstractPropertiesRepository):
 
                 properties.append(PropertyData(**property_data))
 
-        count_query = select(func.count(mappings.Property.id))
+        count_query = (
+            select(func.count())
+            .select_from(mappings.Property)
+            .join(mappings.Address, mappings.Property.address_id == mappings.Address.id)
+            .join(mappings.City, mappings.Address.city_id == mappings.City.id)
+        )
+
+        # Apply filters to count query
+        for q, v in queries.dict().items():
+            if not v or q in ("sort", "limit", "offset"):
+                continue
+            column = getattr(mappings.Property, q)
+            count_query = count_query.where(column == v)
+
+        # Execute count query
         async with self.session.begin():
-            count_result = await self.session.execute(count_query)
-            total_count = count_result.scalar()
+            total_count = await self.session.execute(count_query)
+        total_count = total_count.scalar()
         return properties, total_count
 
     async def remove_by_id(self, id: int) -> None:
