@@ -23,7 +23,7 @@ class UpdateAddressService:
         self, id: int, request: UpdateAddressRequest
     ) -> UpdateAddressResponse:
         if request.cep:
-            pattern = r"^\d{5}(-\d{3})?$"
+            pattern = r"^\d{8}|\d{5}-\d{3}$"
             match = re.match(pattern, request.cep)
             if not match:
                 raise StatusError(

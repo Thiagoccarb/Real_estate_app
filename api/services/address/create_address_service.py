@@ -27,9 +27,8 @@ class AddAddressService:
             city = await self.city_repository.add(
                 CreateCity(name=request.city_data.name, state=request.city_data.state)
             )
-        pattern = r"^\d{5}(-\d{3})?$"
-        match = re.match(pattern, request.cep)
-        if not match:
+        pattern = r"^\d{8}|\d{5}-\d{3}$"
+        if not re.match(pattern, request.cep):
             raise StatusError(
                 "cep must be in the format XXXXX-XXX or XXXXXXXX",
                 422,

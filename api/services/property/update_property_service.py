@@ -56,7 +56,6 @@ class UpdatePropertyService:
                 existing_property.address_id, UpdateAddressRequest(**update_data)
             )
         )
-
         updated_property: Property = await self.property_repository.update_by_id(
             id=id, data=request
         )
