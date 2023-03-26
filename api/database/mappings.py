@@ -1,5 +1,5 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, ForeignKey, Integer, LargeBinary, DateTime
+from sqlalchemy import Column, ForeignKey, Integer, Boolean, DateTime
 from sqlalchemy.dialects.mysql import VARCHAR
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
@@ -42,6 +42,9 @@ class Image(Base):
     url = Column(VARCHAR(512), nullable=False)
     property_id = Column(Integer, ForeignKey("properties.id", ondelete="CASCADE"))
     created_at = Column(DateTime, server_default=func.current_timestamp())
+    audio_hash = Column(VARCHAR(512), nullable=True)
+    position = Column(Integer, nullable=True)
+    is_active = Column(Boolean, default=True)
 
 
 class City(Base):
