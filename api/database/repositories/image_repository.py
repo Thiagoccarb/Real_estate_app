@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Union
+from typing import List, Union
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.sql import delete, select
@@ -18,7 +18,10 @@ class AbstractImagesRepository(ABC):
     @abstractmethod
     async def remove_by_property_id(self, property_id: int) -> None:
         raise NotImplementedError()
-
+    
+    @abstractmethod
+    async def find_all_by_property_id(self, property_id: int) -> Union[Image, None]:
+        raise NotImplementedError()
 
 class ImagesRepository(AbstractImagesRepository):
     def __init__(self, session: AsyncSession = Depends(get_db)):
@@ -31,6 +34,15 @@ class ImagesRepository(AbstractImagesRepository):
 
         await self.session.refresh(image)
         return Image.from_orm(image)
+    
+    async def find_all_by_property_id(self, property_id: int) -> List[Image]:
+        async with self.session.begin():
+            image = await self.session.execute(
+                select(mappings.Image).where(mappings.Image.property_id == property_id)
+            )
+        image = image.scalars().all()
+        image = [Image.from_orm(item) for item in image] if image else None
+        return image
 
     async def remove_by_property_id(self, property_id: int) -> None:
         async with self.session.begin():

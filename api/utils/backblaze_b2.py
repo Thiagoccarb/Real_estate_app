@@ -43,3 +43,7 @@ class B2skd:
     def list_file_names(self) -> List[str]:
         data = list(self.__bucket.ls())
         return [item[0].file_name for item in data]
+
+    def delete_file_by_audio_hash(self, file_name: str) -> None:
+        for file_version_info in self.__bucket.list_file_versions(file_name=file_name):
+            self.__bucket.delete_file_version(file_version_info.id_, file_version_info.file_name)

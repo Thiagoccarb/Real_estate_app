@@ -45,8 +45,8 @@ class UsersRepository(AbstractUsersRepository):
             user = await self.session.execute(
                 select(mappings.User).where(mappings.User.email == email)
             )
-        user = user.scalar()
-        return user if user else None
+            user = user.scalar()
+        return User.from_orm(user) if user else None
 
     async def find_by_id(self, id: int) -> Union[User, None]:
         async with self.session.begin():
