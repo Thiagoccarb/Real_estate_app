@@ -64,6 +64,7 @@ class UpdatePropertyService:
             name=updated_property.name,
             action=updated_property.action,
             type=updated_property.type,
+            price=updated_property.price,
             address=UpdateAddress(
                 street_name=updated_address.street_name,
                 number=updated_address.number,

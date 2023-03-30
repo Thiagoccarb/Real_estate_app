@@ -2,7 +2,7 @@ from fastapi import Depends
 import re
 
 from database.mappings import City
-from database.dtos.addresses_dtos import CreateAddress
+from database.dtos.addresses_dtos import AddressWithCity, CreateAddress
 from database.dtos.cities_dtos import CreateCity
 from schemas.address_schema import CreateAddressRequest, Address
 from database.repositories.city_repository import CitiesRepository
@@ -34,7 +34,7 @@ class AddAddressService:
                 422,
                 "unprocessable_entity",
             )
-        new_address = await self.address_repository.add(
+        new_address: Address = await self.address_repository.add(
             CreateAddress(
                 street_name=request.street_name,
                 city_id=city.id,
@@ -42,4 +42,8 @@ class AddAddressService:
                 cep=request.cep,
             )
         )
-        return new_address
+
+        return AddressWithCity(**{
+            **new_address.dict(),
+            "city": {**city.dict(exclude={"id"})}
+        })

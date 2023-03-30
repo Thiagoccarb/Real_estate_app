@@ -1,6 +1,9 @@
 from typing import Optional
 from pydantic import BaseModel
 
+from schemas.address_schema import Address
+from database.dtos.cities_dtos import CreateCity
+
 
 class CreateAddress(BaseModel):
     street_name: str
@@ -8,7 +11,9 @@ class CreateAddress(BaseModel):
     cep: str
     city_id: int
 
-
+class AddressWithCity(Address):
+    city: CreateCity
+    
 class UpdateAddress(BaseModel):
     street_name: Optional[str]
     number: Optional[int]
@@ -16,7 +21,7 @@ class UpdateAddress(BaseModel):
     city_id: Optional[int]
 
 
-class CreateAddressWithoutId(BaseModel):
+class AddressWithoutId(BaseModel):
     street_name: str
     number: Optional[int]
     cep: str

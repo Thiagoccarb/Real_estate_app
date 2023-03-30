@@ -1,5 +1,5 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, ForeignKey, Integer, Boolean, DateTime
+from sqlalchemy import Column, ForeignKey, Integer, Boolean, DateTime, Float
 from sqlalchemy.dialects.mysql import VARCHAR
 from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
@@ -32,7 +32,7 @@ class Property(Base):
     address_id = Column(Integer, ForeignKey("addresses.id", ondelete="CASCADE"))
     created_at = Column(DateTime, server_default=func.current_timestamp())
     updated_at = Column(DateTime, nullable=True, default=None)
-
+    price = Column(Float, nullable = True)
 
 class Image(Base):
     __tablename__ = "images"
@@ -54,7 +54,7 @@ class City(Base):
     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     name = Column(VARCHAR(512), nullable=False)
     state = Column(VARCHAR(8), nullable=False)
-
+    
 
 class Address(Base):
     __tablename__ = "addresses"

@@ -1,8 +1,9 @@
 from fastapi import Depends
 
 from schemas.address_schema import CreateAddressRequest
-from schemas.property_schemas import CreatePropertyRequest, Property
+from schemas.property_schemas import CreatePropertyRequest, CreatedProperty, Property
 from services.address.create_address_service import AddAddressService
+from database.dtos.addresses_dtos import AddressWithCity, AddressWithoutId
 from database.dtos.properties_dtos import CreateProperty
 from database.repositories.property_repository import PropertiesRepository
 from database.dtos.cities_dtos import CreateCity
@@ -31,7 +32,7 @@ class AddPropertyService:
                 'field `action` must be "rent" or "sale"', 422, "unprocessable_entity"
             )
 
-        new_address = await self.add_address_service.execute(
+        new_address_data: AddressWithCity = await self.add_address_service.execute(
             CreateAddressRequest(
                 street_name=request.address.street_name,
                 number=request.address.number,
@@ -39,13 +40,21 @@ class AddPropertyService:
                 city_data=CreateCity(name=request.city.name, state=request.city.state),
             )
         )
-
-        new_property = await self.property_repository.add(
+        new_property: Property = await self.property_repository.add(
             data=CreateProperty(
                 name=request.name,
                 action=request.action,
                 type=request.type,
-                address_id=new_address.id,
+                address_id=new_address_data.id,
+                price=request.price
             )
         )
-        return new_property
+        return CreatedProperty(
+            id=new_property.id,
+            name=new_property.name,
+            action=new_property.action,
+            type=new_property.type,
+            price=new_property.price,
+            address=AddressWithoutId(street_name=new_address_data.street_name, number=new_address_data.number,cep=new_address_data.cep),
+            city=CreateCity(name=new_address_data.city.name, state=new_address_data.city.state)
+        )

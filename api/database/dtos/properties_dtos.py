@@ -6,6 +6,7 @@ class CreateProperty(BaseModel):
     name: str
     action: str
     type: str
+    price: float
     address_id: int
 
 
