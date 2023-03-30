@@ -29,8 +29,8 @@ class RemovePropertyService:
                 "Property with `id` {id} not found", 404, "not_found", id=id
             )
         list_image_data: Image = await self.image_repository.find_all_by_property_id(id)
-        list_audio_hashes = [image.audio_hash for image in list_image_data]
-        if list_audio_hashes:
+        if list_image_data:
+            list_audio_hashes = [image.audio_hash for image in list_image_data]
             for audio_hash in list_audio_hashes:
                 self.b2.delete_file_by_audio_hash(audio_hash)
         await self.property_repository.remove_by_id(id)
