@@ -1,5 +1,4 @@
 import os
-import re
 from typing import Optional
 from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
@@ -18,7 +17,7 @@ from schemas.auth_schemas import UserCredentialsRequest
 load_dotenv()
 
 SECRET_KEY = os.getenv("SECRET_KEY")
-ACCESS_TOKEN_EXPIRE_MINUTES = 1440  # 1 day = 24 * 60 minutes
+ACCESS_TOKEN_EXPIRE_MINUTES = 1440
 
 
 class AuthService:
@@ -56,7 +55,7 @@ class AuthService:
             data = jwt.decode(authorization, SECRET_KEY, algorithms="HS256")
             existing_user: User = await self.user_repository.find_by_id(data.get("sub"))
             if not existing_user:
-                raise StatusError("invalid token", 401, "user_data_not_fount")
+                raise StatusError("invalid token", 401, "user_data_not_found")
             return existing_user.id
         except Exception:
             raise StatusError("invalid token", 401, "unauthorized_user")

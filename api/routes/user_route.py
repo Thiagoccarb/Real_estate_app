@@ -16,3 +16,17 @@ user_router.add_api_route(
     status_code=201,
     response_model=CreateUserResponse,
 )
+
+user_router.add_api_route(
+    "/send-email",
+    user_controller.send_email,
+    methods=["POST"],
+    status_code=200,
+)
+
+user_router.add_api_route(
+    "/reset-password",
+    user_controller.reset_password,
+    methods=["POST"],
+    status_code=200,
+)

@@ -4,7 +4,7 @@ from typing import Union
 from sqlalchemy.sql import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from database.dtos.users_dto import CreateUser
+from database.dtos.users_dto import CreateUser, UpdateUser
 from schemas.user_schemas import User
 from database import mappings
 from database import get_db
@@ -55,3 +55,13 @@ class UsersRepository(AbstractUsersRepository):
             )
         user = user.scalar()
         return user if user else None
+
+    async def update_by_id(self, id: int, data: UpdateUser) -> User:
+        user_orm = await self.session.get(mappings.User, id)
+
+        for field, value in data.dict(exclude_none=True).items():
+            setattr(user_orm, field, value)
+
+        await self.session.commit()
+
+        return User.from_orm(user_orm)
