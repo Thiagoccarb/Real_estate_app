@@ -8,7 +8,9 @@ class CreateProperty(BaseModel):
     type: str
     price: float
     address_id: int
-
+    description: str
+    bathrooms: int
+    bedrooms: int
 
 class UpdateProperty(CreateProperty):
     name: Optional[str]

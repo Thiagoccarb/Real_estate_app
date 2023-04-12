@@ -15,6 +15,9 @@ class CreatePropertyRequest(BaseModel):
     name: str
     action: str
     type: str
+    description: str
+    bathrooms: int
+    bedrooms: int
     price: float
     address: AddressWithoutId
     city: CreateCity
@@ -28,6 +31,9 @@ class CreatePropertyRequest(BaseModel):
                 "price": "1000",
                 "address": {"street_name": "test", "cep": "11111-111"},
                 "city": {"name": "São Paulo", "state": "SP"},
+                "bedrooms": 3,
+                "bathrooms": 4,
+                "description": "beautiful house"
             }
         }
 
@@ -39,10 +45,16 @@ class UpdatePropertyRequest(BaseModel):
     name: Optional[str]
     action: Optional[str]
     type: Optional[str]
+    description: Optional[str]
+    bathrooms: Optional[int]
+    bedrooms: Optional[int]
     price: Optional[float]
     address: Optional[UpdateAddress]
     city: Optional[UpdateCity]
-
+    description: str
+    bathrooms: int
+    bedrooms: int
+    
     class Config:
         schema_extra = {
             "example": {
@@ -52,6 +64,9 @@ class UpdatePropertyRequest(BaseModel):
                 "type": "apartment",
                 "address": {"street_name": "test", "cep": "11111-111"},
                 "city": {"name": "São Paulo", "state": "SP"},
+                "bedrooms": 3,
+                "bathrooms": 4,
+                "description": "beautiful house"
             }
         }
 

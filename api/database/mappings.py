@@ -33,6 +33,9 @@ class Property(Base):
     created_at = Column(DateTime, server_default=func.current_timestamp())
     updated_at = Column(DateTime, nullable=True, default=None)
     price = Column(Float, nullable = True)
+    bedrooms = Column(Integer, nullable=False)
+    bathrooms = Column(Integer, nullable=False)
+    description = Column(VARCHAR(512), nullable=False)
 
 class Image(Base):
     __tablename__ = "images"
