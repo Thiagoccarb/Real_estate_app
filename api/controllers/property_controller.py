@@ -38,7 +38,11 @@ class PropertyController:
         id: Optional[int] = Query(None),
         type: Optional[str] = Query(None, regex="^(apartment|house)$"),
         action: Optional[str] = Query(None, regex="^(rent|sale)$"),
-        sort: Optional[str] = Query(None, regex="^(name)$"),
+        sort: Optional[str] = Query(None, regex="^(name|price|bedrooms|bathrooms)$"),
+        price: Optional[float] = Query(None),
+        bathrooms: Optional[int] = Query(None),
+        bedrooms: Optional[int] = Query(None),
+        order: Optional[str] = Query("ASC", regex="^(ASC|DESC)$"),
         offset: int = Query(0, ge=0),
         limit: int = Query(10, gt=0),
         list_property_service: ListPropertyService = Depends(ListPropertyService),
@@ -48,7 +52,7 @@ class PropertyController:
                 "Query limit must be no greater than 50", 400, "invalid_query-limit"
             )
         queries = ListPropertyQueries(
-            id=id, type=type, action=action, sort=sort, offset=offset, limit=limit
+            id=id, type=type, action=action, sort=sort, offset=offset, limit=limit, price=price, bathrooms=bathrooms, bedrooms=bedrooms, order=order
         )
         properties, count = await list_property_service.execute(queries)
         next_page, previous_page = await get_pagination_links(request, count)

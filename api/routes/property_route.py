@@ -72,28 +72,47 @@ property_router.add_api_route(
                         "result": [
                             {
                                 "id": 1,
-                                "name": "house 1",
-                                "action": None,
-                                "type": None,
-                                "address_id": None,
-                                "created_at": "2023-02-26T19:19:39",
+                                "name": "property",
+                                "action": "sale",
+                                "type": "apartment",
+                                "created_at": "2023-03-30T02:19:29",
                                 "updated_at": None,
-                                "image_ids": [
-                                    1,
-                                    2,
-                                    3,
-                                    4,
-                                ],
-                            },
-                            {
-                                "id": 11,
+                                "price": 100000,
+                                "bedrooms": 0,
+                                "bathrooms": 0,
+                                "description": "",
+                                "image_urls": [],
+                                "address": {
+                                    "street_name": "",
+                                    "number": 100,
+                                    "cep": "11111-111"
+                                },
+                                "city": {
+                                    "name": "teste",
+                                    "state": "SP"
+                                }
+                                },
+                                {
+                                "id": 2,
                                 "name": "property",
                                 "action": "rent",
                                 "type": "apartment",
-                                "address_id": 10,
-                                "created_at": "2023-03-13T23:42:10",
+                                "created_at": "2023-04-11T01:55:47",
                                 "updated_at": None,
-                                "image_ids": [],
+                                "price": 200000,
+                                "bedrooms": 3,
+                                "bathrooms": 4,
+                                "description": "beautiful house",
+                                "image_urls": [],
+                                "address": {
+                                    "street_name": "test street",
+                                    "number": 100,
+                                    "cep": "11111-112"
+                                },
+                                "city": {
+                                    "name": "Ribeirão Preto",
+                                    "state": "SP"
+                                }
                             },
                         ],
                     },

@@ -65,7 +65,10 @@ class PropertiesRepository(AbstractPropertiesRepository):
                     mappings.Property.name,
                     mappings.Property.action,
                     mappings.Property.type,
-                    mappings.Property.address_id,
+                    mappings.Property.description,
+                    mappings.Property.price,
+                    mappings.Property.bathrooms,
+                    mappings.Property.bedrooms,
                     mappings.Property.created_at,
                     mappings.Property.updated_at,
                     mappings.Address.street_name,
@@ -81,14 +84,21 @@ class PropertiesRepository(AbstractPropertiesRepository):
                 )
                 .join(mappings.City, mappings.Address.city_id == mappings.City.id)
             )
-            for q, v in queries.dict().items():
-                if not v or q in ("sort", "limit", "offset"):
+            for q, v in queries.dict(exclude_none=True).items():
+                if q in ("sort", "limit", "offset", "order"):
                     continue
-                column = getattr(mappings.Property, q)
-                query = query.where(column == v)
+                if q in ('price', 'bathrooms', 'bedrooms'):
+                    column = getattr(mappings.Property, q)
+                    query = query.where(column >= v)
+                else:
+                    column = getattr(mappings.Property, q)
+                    query = query.where(column == v)
             if queries.sort:
                 sort_column = getattr(mappings.Property, queries.sort)
-                query = query.order_by(sort_column)
+                if queries.order == 'DESC':
+                    query = query.order_by(sort_column.desc())
+                else:
+                    query = query.order_by(sort_column.asc())
 
             query = query.offset(queries.offset).limit(queries.limit)
             result = await self.session.execute(query)
@@ -99,7 +109,10 @@ class PropertiesRepository(AbstractPropertiesRepository):
                     "name": item.name,
                     "action": item.action,
                     "type": item.type,
-                    "address_id": item.address_id,
+                    "description": item.description,
+                    "price": item.price,
+                    "bathrooms": item.bathrooms,
+                    "bedrooms": item.bedrooms,
                     "created_at": item.created_at,
                     "updated_at": item.updated_at,
                     "address": {
@@ -133,8 +146,8 @@ class PropertiesRepository(AbstractPropertiesRepository):
         )
 
         # Apply filters to count query
-        for q, v in queries.dict().items():
-            if not v or q in ("sort", "limit", "offset"):
+        for q, v in queries.dict(exclude_none=True).items():
+            if q in ("sort", "limit", "offset", "order"):
                 continue
             column = getattr(mappings.Property, q)
             count_query = count_query.where(column == v)

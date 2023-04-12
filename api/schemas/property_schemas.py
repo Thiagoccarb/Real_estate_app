@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Any, Optional
 from pydantic_sqlalchemy import sqlalchemy_to_pydantic
 import datetime
@@ -89,10 +89,13 @@ class UpdatePropertyResponse(BaseResponse):
 
 class PropertyData(Property):
     id: Optional[int]
+    description: Optional[str]
+    bedrooms: Optional[int]
+    bathrooms: Optional[int]
     image_urls: List[Any] = []
     address: AddressWithoutId
     city: CreateCity
-
+    address_id: Optional[int] = Field(exclude = True)
     class Config:
         orm_mode: True
 
