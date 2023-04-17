@@ -1,6 +1,6 @@
-from typing import List
+from typing import List, Optional
 import datetime
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from pydantic_sqlalchemy import sqlalchemy_to_pydantic
 
 from schemas.base import BaseResponse
@@ -8,6 +8,9 @@ from database import mappings
 
 Image = sqlalchemy_to_pydantic(mappings.Image)
 
+class ImageWithoutIdAndPropertyId(Image):
+    property_id: Optional[int] = Field(exclude = True)
+    id: Optional[int] = Field(exclude = True)
 
 class CreateImageRequest(BaseModel):
     str_binary: str
@@ -44,4 +47,4 @@ class CreatedImageData(BaseModel):
 
 
 class BatchCreateImageResponse(BaseResponse):
-    result: List[Image]
+    result: List[ImageWithoutIdAndPropertyId]

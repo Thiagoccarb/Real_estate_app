@@ -9,10 +9,10 @@ city_controller = CityController()
 
 city_router = APIRouter(prefix="/cities", tags=["cities"])
 
-city_router.add_api_route(
-    "",
-    city_controller.add,
-    methods=["POST"],
-    status_code=201,
-    response_model=CreateCityResponse,
-)
+# city_router.add_api_route(
+#     "",
+#     city_controller.add,
+#     methods=["POST"],
+#     status_code=201,
+#     response_model=CreateCityResponse,
+# )

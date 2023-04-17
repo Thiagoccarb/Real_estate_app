@@ -50,18 +50,14 @@ app_router.include_router(
                         "error": None,
                         "result": [
                             {
-                                "id": 102,
                                 "url": "https://f005.backblazeb2.com/file/real-state/bf57211413e99a76a9721d93d25024b7",
-                                "property_id": 1,
                                 "created_at": "2023-03-26T21:46:20",
                                 "audio_hash": "bf57211413e99a76a9721d93d25024b7",
                                 "position": 1,
                                 "is_active": True,
                             },
                             {
-                                "id": 101,
                                 "url": "https://f005.backblazeb2.com/file/real-state/060a372115181772a9946fdaef330985",
-                                "property_id": 1,
                                 "created_at": "2023-03-26T21:18:01",
                                 "audio_hash": "060a372115181772a9946fdaef330985",
                                 "position": 2,

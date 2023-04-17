@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from pydantic_sqlalchemy import sqlalchemy_to_pydantic
 
 from schemas.base import BaseResponse
@@ -32,9 +32,11 @@ class UpdateAddressRequest(BaseModel):
             "example": {"street_name": "street_name", "city_id": 1, "cep": "11111-111"}
         }
 
+class AddressWithoutCityId(Address):
+    city_id:  Optional[int] = Field(exclude = True)
 
 class CreateAddressResponse(BaseResponse):
-    result: Address
+    result: AddressWithoutCityId
 
 
 class UpdateAddressResponse(UpdateAddressRequest):

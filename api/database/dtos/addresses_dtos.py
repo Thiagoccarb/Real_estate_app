@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from schemas.address_schema import Address
 from database.dtos.cities_dtos import CreateCity
@@ -18,7 +18,7 @@ class UpdateAddress(BaseModel):
     street_name: Optional[str]
     number: Optional[int]
     cep: Optional[str]
-    city_id: Optional[int]
+    city_id: Optional[int] = Field(exclude = True)
 
 
 class AddressWithoutId(BaseModel):

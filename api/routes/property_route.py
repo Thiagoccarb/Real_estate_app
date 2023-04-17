@@ -28,6 +28,39 @@ property_router.add_api_route(
     property_controller.remove_by_id,
     methods=["DELETE"],
     status_code=200,
+    responses={
+                    200: {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "success": True,
+                                    "error": None,
+                                    "result": None,
+                                    "message": "property with `id` id has been removed"
+                                }
+                            }
+                        }
+                    },
+                    201: {},
+                    422: {},
+                    400: {},
+                    404: {
+                        "description": "Not found",
+                        "content": {
+                            "application/json": {
+                                "example": {
+                                    "success": False,
+                                    "error": {
+                                        "type": "not_found",
+                                        "description": "Property with `id` id not found"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    422: {},
+                },
     response_model=RemovePropertyResponse,
 )
 
@@ -45,12 +78,31 @@ property_router.add_api_route(
                 "name": "property",
                 "action": "rent",
                 "type": "apartment",
+                "updated_at": "2023-04-16T22:10:01.543187",
+                "description": "beautiful house",
+                "bathrooms": 4,
+                "bedrooms": 3,
+                "price": 10000.0,
                 "address": {"street_name": "test", "cep": "11111-111"},
                 "city": {"name": "São Paulo", "state": "SP"},
             },
             "message": None,
         },
         201: {},
+        404: {
+                "description": "Not found",
+                    "content": {
+                        "application/json": {
+                            "example": {
+                                "success": False,
+                                "error": {
+                                    "type": "not_found",
+                                    "description": "Property with `id` id not found"
+                                }
+                            }
+                        }
+                    }
+                },
         422: {},
     },
 )

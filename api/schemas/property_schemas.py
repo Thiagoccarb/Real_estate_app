@@ -58,15 +58,15 @@ class UpdatePropertyRequest(BaseModel):
     class Config:
         schema_extra = {
             "example": {
-                "name": "property",
+                 "name": "property",
                 "action": "rent",
-                "price": 2000,
                 "type": "apartment",
+                "description": "beautiful house",
+                "bathrooms": 4,
+                "bedrooms": 3,
+                "price": 10000.0,
                 "address": {"street_name": "test", "cep": "11111-111"},
                 "city": {"name": "São Paulo", "state": "SP"},
-                "bedrooms": 3,
-                "bathrooms": 4,
-                "description": "beautiful house"
             }
         }
 
@@ -76,6 +76,7 @@ class CreatePropertyResponse(BaseResponse):
 
 
 class UpdatedProperty(UpdatePropertyRequest):
+    address_id: Optional[int] = Field(exclude=True)
     pass
 
 
