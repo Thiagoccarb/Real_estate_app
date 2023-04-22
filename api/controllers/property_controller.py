@@ -52,7 +52,16 @@ class PropertyController:
                 "Query limit must be no greater than 50", 400, "invalid_query-limit"
             )
         queries = ListPropertyQueries(
-            id=id, type=type, action=action, sort=sort, offset=offset, limit=limit, price=price, bathrooms=bathrooms, bedrooms=bedrooms, order=order
+            id=id,
+            type=type,
+            action=action,
+            sort=sort,
+            offset=offset,
+            limit=limit,
+            price=price,
+            bathrooms=bathrooms,
+            bedrooms=bedrooms,
+            order=order,
         )
         properties, count = await list_property_service.execute(queries)
         next_page, previous_page = await get_pagination_links(request, count)

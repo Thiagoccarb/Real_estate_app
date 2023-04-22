@@ -49,7 +49,7 @@ class AddPropertyService:
                 price=request.price,
                 description=request.description,
                 bedrooms=request.bedrooms,
-                bathrooms=request.bathrooms
+                bathrooms=request.bathrooms,
             )
         )
         return CreatedProperty(
@@ -61,6 +61,12 @@ class AddPropertyService:
             description=new_property.description,
             bedrooms=new_property.bedrooms,
             bathrooms=new_property.bathrooms,
-            address=AddressWithoutId(street_name=new_address_data.street_name, number=new_address_data.number,cep=new_address_data.cep),
-            city=CreateCity(name=new_address_data.city.name, state=new_address_data.city.state)
+            address=AddressWithoutId(
+                street_name=new_address_data.street_name,
+                number=new_address_data.number,
+                cep=new_address_data.cep,
+            ),
+            city=CreateCity(
+                name=new_address_data.city.name, state=new_address_data.city.state
+            ),
         )

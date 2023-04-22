@@ -8,9 +8,11 @@ from database import mappings
 
 Image = sqlalchemy_to_pydantic(mappings.Image)
 
+
 class ImageWithoutIdAndPropertyId(Image):
-    property_id: Optional[int] = Field(exclude = True)
-    id: Optional[int] = Field(exclude = True)
+    property_id: Optional[int] = Field(exclude=True)
+    id: Optional[int] = Field(exclude=True)
+
 
 class CreateImageRequest(BaseModel):
     str_binary: str
@@ -34,7 +36,7 @@ class BatchCreateImageRequest(BaseModel):
             "example": {
                 "list_str_binary": [
                     "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBs...",
-                    "/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCg..."
+                    "/9j/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCg...",
                 ],
                 "property_id": 1,
             }

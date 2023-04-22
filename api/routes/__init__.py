@@ -187,9 +187,9 @@ app_router.include_router(
 app_router.include_router(
     user_router,
     responses={
-        200:{
-                "description": "N/A",
-            },
+        200: {
+            "description": "N/A",
+        },
         201: {
             "description": "user created",
             "content": {

@@ -17,7 +17,7 @@
 #     async def test_execute_success(self):
 #         user_repository_mock = MagicMock(spec=UsersRepository)
 #         update_user_service_mock = MagicMock(spec=UpdateUserService)
-        
+
 #         service = ResetUserPasswordService(user_repository_mock, update_user_service_mock)
 
 #         request = PasswordResetRequest(
@@ -52,7 +52,7 @@
 #     async def test_execute_invalid_token(self):
 #         user_repository_mock = MagicMock(spec=UsersRepository)
 #         update_user_service_mock = MagicMock(spec=UpdateUserService)
-        
+
 #         service = ResetUserPasswordService(user_repository_mock, update_user_service_mock)
 
 #         request = PasswordResetRequest(
@@ -75,7 +75,7 @@
 #     async def test_execute_invalid_credential(self):
 #         user_repository_mock = MagicMock(spec=UsersRepository)
 #         update_user_service_mock = MagicMock(spec=UpdateUserService)
-        
+
 #         service = ResetUserPasswordService(user_repository_mock, update_user_service_mock)
 
 #         request = PasswordResetRequest(

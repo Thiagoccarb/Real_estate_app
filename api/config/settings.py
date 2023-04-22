@@ -17,6 +17,7 @@ MAIL_SERVER = os.getenv("MAIL_SERVER")
 MAIL_FROM_NAME = os.getenv("MAIL_FROM_NAME")
 BASE_URL: str = os.getenv("BASE_URL")
 
+
 class Settings(BaseSettings):
     class Config:
         env_file = f".env"
@@ -32,20 +33,20 @@ class Settings(BaseSettings):
 
     # Url
     BASE_URL: str = BASE_URL
-    
+
     # Database
     API_DB_HOST: str = API_DB_HOST
     API_DB_USER: str = API_DB_USER
     API_DB_PASSWORD: str = API_DB_PASSWORD
     API_DB_DATABASE: str = API_DB_DATABASE
 
-    #email
-    MAIL_USERNAME : str = MAIL_USERNAME
-    MAIL_PASSWORD : str = MAIL_PASSWORD
-    MAIL_FROM : str = MAIL_FROM
-    MAIL_PORT : str = MAIL_PORT
-    MAIL_SERVER : str = MAIL_SERVER
-    MAIL_FROM_NAME : str = MAIL_FROM_NAME
+    # email
+    MAIL_USERNAME: str = MAIL_USERNAME
+    MAIL_PASSWORD: str = MAIL_PASSWORD
+    MAIL_FROM: str = MAIL_FROM
+    MAIL_PORT: str = MAIL_PORT
+    MAIL_SERVER: str = MAIL_SERVER
+    MAIL_FROM_NAME: str = MAIL_FROM_NAME
 
 
 settings = Settings()

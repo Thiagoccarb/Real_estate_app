@@ -17,7 +17,7 @@ class UpdateUserService:
         self.pass_manager = pass_manager
 
     async def execute(self, id, request: UpdateUserRequest) -> User:
-        if request.email: 
+        if request.email:
             if not re.match(
                 r"^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.(com|com\.br|net)$", request.email
             ):

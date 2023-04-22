@@ -43,7 +43,6 @@ class AddAddressService:
             )
         )
 
-        return AddressWithCity(**{
-            **new_address.dict(),
-            "city": {**city.dict(exclude={"id"})}
-        })
+        return AddressWithCity(
+            **{**new_address.dict(), "city": {**city.dict(exclude={"id"})}}
+        )

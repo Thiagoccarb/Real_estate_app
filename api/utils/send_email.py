@@ -16,19 +16,22 @@ conf = ConnectionConfig(
     MAIL_PORT=MAIL_PORT,
     MAIL_SERVER=MAIL_SERVER,
     MAIL_FROM_NAME=MAIL_FROM_NAME,
-    MAIL_STARTTLS = False,
-    MAIL_SSL_TLS = True,
+    MAIL_STARTTLS=False,
+    MAIL_SSL_TLS=True,
     USE_CREDENTIALS=True,
-    VALIDATE_CERTS = True,
-    TEMPLATE_FOLDER='utils/templates'
+    VALIDATE_CERTS=True,
+    TEMPLATE_FOLDER="utils/templates",
 )
 
-def send_email_background(background_tasks: BackgroundTasks, subject: str, email_to: str, body: dict):
+
+def send_email_background(
+    background_tasks: BackgroundTasks, subject: str, email_to: str, body: dict
+):
     message = MessageSchema(
         subject=subject,
         recipients=[email_to],
         template_body=body,
-        subtype='html',
+        subtype="html",
     )
     fm = FastMail(conf)
-    background_tasks.add_task(fm.send_message, message, template_name='email.html')
+    background_tasks.add_task(fm.send_message, message, template_name="email.html")

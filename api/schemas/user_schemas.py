@@ -24,7 +24,8 @@ class CreateUserRequest(CreateUser):
                 "password": "sgfPDPNifa",
             }
         }
-        
+
+
 class UpdateUserRequest(UpdateUser):
     pass
 
@@ -51,16 +52,13 @@ class EmailRequest(BaseModel):
                 "email": "user@email.com",
             }
         }
-        
+
 
 class PasswordResetRequest(BaseModel):
     email: str
     password: str
-    
+
     class Config:
         schema_extra = {
-            "example": {
-                "email": "user@email.com",
-                "password": "***********"
-            }
+            "example": {"email": "user@email.com", "password": "***********"}
         }

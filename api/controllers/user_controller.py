@@ -30,12 +30,16 @@ class UserController:
     ) -> None:
         await send_user_email_service.execute(request, background_tasks)
         return BaseResponse(success=True, message="Please, check your email.")
-    
+
     async def reset_password(
         self,
         request: PasswordResetRequest,
-        token = Query(...),
-        reset_password_service: ResetUserPasswordService = Depends(ResetUserPasswordService),
+        token=Query(...),
+        reset_password_service: ResetUserPasswordService = Depends(
+            ResetUserPasswordService
+        ),
     ) -> None:
         await reset_password_service.execute(request, token)
-        return BaseResponse(success=True, message="user password has been successfully changed.")
+        return BaseResponse(
+            success=True, message="user password has been successfully changed."
+        )

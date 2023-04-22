@@ -32,8 +32,8 @@
 #                 mock_encode.assert_called_once_with({"sub": request.email, "exp": mock_encode}, SECRET_KEY, algorithm="HS256")
 #                 mock_delay.assert_called_once_with(
 #                     background_tasks_mock,
-#                     'No reply',   
-#                     request.email, 
+#                     'No reply',
+#                     request.email,
 #                     {
 #                         "url": expected_url,
 #                     },

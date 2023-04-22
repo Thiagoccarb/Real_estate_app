@@ -26,7 +26,7 @@
 #         request = UpdateAddressRequest(cep="invalid_cep_format")
 #         with self.assertRaises(StatusError):
 #             await self.service.execute(1, request)
-            
+
 #     async def test_update_address_new_city_without_city_data(self):
 #         request = UpdateAddressRequest(
 #             street_name="New Street",
@@ -42,7 +42,7 @@
 
 #         mock_city = City(name="Test City", state="TS", id=1)
 #         self.city_repository.find_by_id.return_value = mock_city
-    
+
 #         mock_updated_address = Address(
 #           id=1,
 #           street_name=request.street_name,
@@ -50,7 +50,7 @@
 #           number=request.number,
 #           cep=request.cep,
 #         )
-        
+
 #         self.address_repository.update_by_id.return_value=mock_updated_address
 
 #         result = await self.service.execute(1, request)
@@ -67,7 +67,7 @@
 #         self.city_repository.add.assert_not_called()
 #         self.address_repository.find_by_id.assert_called()
 #         self.city_repository.find_by_id.assert_called()
-        
+
 #         mock_response = UpdateAddressResponse(
 #             street_name=mock_updated_address.street_name,
 #             number=mock_updated_address.number,
@@ -79,7 +79,7 @@
 #             ),
 #         )
 #         self.assertEqual(result, mock_response)
-   
+
 #     async def test_update_address_new_city_with_city_data_and_existing_city_data(self):
 #         request = UpdateAddressRequest(
 #             street_name="New Street",
@@ -95,7 +95,7 @@
 
 #         mock_city = City(name="Test City", state="TS", id=1)
 #         self.city_repository.find_by.return_value = mock_city
-    
+
 #         mock_updated_address = Address(
 #           id=1,
 #           street_name=request.street_name,
@@ -103,7 +103,7 @@
 #           number=request.number,
 #           cep=request.cep,
 #         )
-        
+
 #         self.address_repository.update_by_id.return_value=mock_updated_address
 
 #         result = await self.service.execute(1, request)
@@ -120,7 +120,7 @@
 #         self.city_repository.add.assert_not_called()
 #         self.address_repository.find_by_id.assert_not_called()
 #         self.city_repository.find_by_id.assert_not_called()
-        
+
 #         mock_response = UpdateAddressResponse(
 #             street_name=mock_updated_address.street_name,
 #             number=mock_updated_address.number,
@@ -132,7 +132,7 @@
 #             ),
 #         )
 #         self.assertEqual(result, mock_response)
-    
+
 #     async def test_update_address_new_city_with_city_data_and_non_existing_city_data(self):
 #         request = UpdateAddressRequest(
 #             street_name="New Street",
@@ -157,7 +157,7 @@
 #           number=request.number,
 #           cep=request.cep,
 #         )
-        
+
 #         self.address_repository.update_by_id.return_value=mock_updated_address
 
 #         result = await self.service.execute(1, request)
@@ -174,7 +174,7 @@
 #         self.city_repository.add.assert_called()
 #         self.address_repository.find_by_id.assert_not_called()
 #         self.city_repository.find_by_id.assert_not_called()
-        
+
 #         mock_response = UpdateAddressResponse(
 #             street_name=mock_updated_address.street_name,
 #             number=mock_updated_address.number,

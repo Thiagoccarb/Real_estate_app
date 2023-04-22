@@ -7,9 +7,11 @@ from config.settings import settings
 
 def compile_db_uri() -> str:
     return (
-        f"mysql+aiomysql://{settings.API_DB_USER}:{settings.API_DB_PASSWORD}@{settings.API_DB_HOST}/{settings.API_DB_DATABASE}" if settings.API_DB_HOST == 'db'
+        f"mysql+aiomysql://{settings.API_DB_USER}:{settings.API_DB_PASSWORD}@{settings.API_DB_HOST}/{settings.API_DB_DATABASE}"
+        if settings.API_DB_HOST == "db"
         else f"mysql+aiomysql://{settings.API_DB_USER}:{settings.API_DB_PASSWORD}@{settings.API_DB_HOST}:3306/{settings.API_DB_DATABASE}"
     )
+
 
 engine = create_async_engine(
     compile_db_uri(),

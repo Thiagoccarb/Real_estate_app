@@ -33,12 +33,14 @@ class CreatePropertyRequest(BaseModel):
                 "city": {"name": "São Paulo", "state": "SP"},
                 "bedrooms": 3,
                 "bathrooms": 4,
-                "description": "beautiful house"
+                "description": "beautiful house",
             }
         }
 
+
 class CreatedProperty(CreatePropertyRequest):
     id: int
+
 
 class UpdatePropertyRequest(BaseModel):
     updated_at: Optional[datetime.datetime] = datetime.datetime.now()
@@ -51,11 +53,11 @@ class UpdatePropertyRequest(BaseModel):
     description: Optional[str]
     bathrooms: Optional[int]
     bedrooms: Optional[int]
-    
+
     class Config:
         schema_extra = {
             "example": {
-                 "name": "property",
+                "name": "property",
                 "action": "rent",
                 "type": "apartment",
                 "description": "beautiful house",
@@ -93,7 +95,8 @@ class PropertyData(Property):
     image_urls: List[Any] = []
     address: AddressWithoutId
     city: CreateCity
-    address_id: Optional[int] = Field(exclude = True)
+    address_id: Optional[int] = Field(exclude=True)
+
     class Config:
         orm_mode: True
 

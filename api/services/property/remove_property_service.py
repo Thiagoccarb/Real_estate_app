@@ -8,6 +8,7 @@ from database.repositories.property_repository import PropertiesRepository
 from errors.status_error import StatusError
 from utils.backblaze_b2 import B2skd
 
+
 class RemovePropertyService:
     def __init__(
         self,
@@ -15,7 +16,6 @@ class RemovePropertyService:
         address_repository: AddressesRepository = Depends(AddressesRepository),
         image_repository: ImagesRepository = Depends(ImagesRepository),
         b2: B2skd = Depends(B2skd),
-
     ):
         self.property_repository = property_repository
         self.address_repository = address_repository
@@ -34,4 +34,3 @@ class RemovePropertyService:
             for audio_hash in list_audio_hashes:
                 self.b2.delete_file_by_audio_hash(audio_hash)
         await self.property_repository.remove_by_id(id)
-

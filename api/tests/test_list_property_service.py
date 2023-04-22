@@ -12,7 +12,22 @@ class TestListPropertyService(IsolatedAsyncioTestCase):
     async def test_execute_with_valid_queries(self):
         # Arrange
         queries = ListPropertyQueries(limit=10, offset=0)
-        properties = [Property(id=1, name="Test Property 1", bedrooms=1, bathrooms=1, description="test"), Property(id=2, name="Test Property 2",bedrooms=1, bathrooms=1, description="test")]
+        properties = [
+            Property(
+                id=1,
+                name="Test Property 1",
+                bedrooms=1,
+                bathrooms=1,
+                description="test",
+            ),
+            Property(
+                id=2,
+                name="Test Property 2",
+                bedrooms=1,
+                bathrooms=1,
+                description="test",
+            ),
+        ]
         count = 2
 
         property_repository_mock = MagicMock(spec=PropertiesRepository)

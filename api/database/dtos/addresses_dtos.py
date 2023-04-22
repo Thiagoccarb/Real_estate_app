@@ -11,14 +11,16 @@ class CreateAddress(BaseModel):
     cep: str
     city_id: int
 
+
 class AddressWithCity(Address):
     city: CreateCity
-    
+
+
 class UpdateAddress(BaseModel):
     street_name: Optional[str]
     number: Optional[int]
     cep: Optional[str]
-    city_id: Optional[int] = Field(exclude = True)
+    city_id: Optional[int] = Field(exclude=True)
 
 
 class AddressWithoutId(BaseModel):

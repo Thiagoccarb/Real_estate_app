@@ -18,10 +18,11 @@ class AbstractImagesRepository(ABC):
     @abstractmethod
     async def remove_by_property_id(self, property_id: int) -> None:
         raise NotImplementedError()
-    
+
     @abstractmethod
     async def find_all_by_property_id(self, property_id: int) -> Union[Image, None]:
         raise NotImplementedError()
+
 
 class ImagesRepository(AbstractImagesRepository):
     def __init__(self, session: AsyncSession = Depends(get_db)):
@@ -34,7 +35,7 @@ class ImagesRepository(AbstractImagesRepository):
 
         await self.session.refresh(image)
         return Image.from_orm(image)
-    
+
     async def find_all_by_property_id(self, property_id: int) -> List[Image]:
         async with self.session.begin():
             image = await self.session.execute(

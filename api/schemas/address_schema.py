@@ -32,8 +32,10 @@ class UpdateAddressRequest(BaseModel):
             "example": {"street_name": "street_name", "city_id": 1, "cep": "11111-111"}
         }
 
+
 class AddressWithoutCityId(Address):
-    city_id:  Optional[int] = Field(exclude = True)
+    city_id: Optional[int] = Field(exclude=True)
+
 
 class CreateAddressResponse(BaseResponse):
     result: AddressWithoutCityId

@@ -32,10 +32,11 @@ class Property(Base):
     address_id = Column(Integer, ForeignKey("addresses.id", ondelete="CASCADE"))
     created_at = Column(DateTime, server_default=func.current_timestamp())
     updated_at = Column(DateTime, nullable=True, default=None)
-    price = Column(Float, nullable = True)
+    price = Column(Float, nullable=True)
     bedrooms = Column(Integer, nullable=False)
     bathrooms = Column(Integer, nullable=False)
     description = Column(VARCHAR(512), nullable=False)
+
 
 class Image(Base):
     __tablename__ = "images"
@@ -57,7 +58,7 @@ class City(Base):
     id = Column(Integer, primary_key=True, autoincrement=True, index=True)
     name = Column(VARCHAR(512), nullable=False)
     state = Column(VARCHAR(8), nullable=False)
-    
+
 
 class Address(Base):
     __tablename__ = "addresses"

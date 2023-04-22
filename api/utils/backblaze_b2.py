@@ -46,4 +46,6 @@ class B2skd:
 
     def delete_file_by_audio_hash(self, file_name: str) -> None:
         for file_version_info in self.__bucket.list_file_versions(file_name=file_name):
-            self.__bucket.delete_file_version(file_version_info.id_, file_version_info.file_name)
+            self.__bucket.delete_file_version(
+                file_version_info.id_, file_version_info.file_name
+            )

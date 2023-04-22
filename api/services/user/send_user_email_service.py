@@ -13,7 +13,8 @@ load_dotenv()
 
 BASE_URL: str = os.getenv("BASE_URL")
 SECRET_KEY = os.getenv("SECRET_KEY")
-ACCESS_TOKEN_EXPIRE_MINUTES = 3  
+ACCESS_TOKEN_EXPIRE_MINUTES = 3
+
 
 class SendUserEmailService:
     def __init__(
@@ -22,8 +23,9 @@ class SendUserEmailService:
     ):
         self.user_repository = user_repository
 
-      
-    async def execute(self, request: EmailRequest, background_tasks: BackgroundTasks) -> None:
+    async def execute(
+        self, request: EmailRequest, background_tasks: BackgroundTasks
+    ) -> None:
         # existing_user = await self.user_repository.find_by_email(request.email)
         # if not existing_user:
         #     raise StatusError("email_not_found", 404, "the provided email was not found.")
@@ -36,10 +38,10 @@ class SendUserEmailService:
         token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
         send_email_background(
             background_tasks,
-            'No reply',   
-            request.email, 
+            "No reply",
+            request.email,
             {
                 "url": f"{BASE_URL}/users/reset-password?token={token}",
             },
-          )
-        print('email successfully sent')
+        )
+        print("email successfully sent")

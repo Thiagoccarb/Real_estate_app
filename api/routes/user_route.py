@@ -29,12 +29,12 @@ user_router.add_api_route(
                         "success": True,
                         "error": None,
                         "result": None,
-                        "message": "Please, check your email."
+                        "message": "Please, check your email.",
                     }
                 },
             },
         },
-        201: {"description": "N/A"}
+        201: {"description": "N/A"},
     },
     methods=["POST"],
     status_code=200,
@@ -52,12 +52,12 @@ user_router.add_api_route(
                         "success": True,
                         "error": None,
                         "result": None,
-                        "message": "user password has been successfully changed"
+                        "message": "user password has been successfully changed",
                     }
                 },
             },
         },
-        201: {"description": "N/A"}
+        201: {"description": "N/A"},
     },
     methods=["POST"],
     status_code=200,

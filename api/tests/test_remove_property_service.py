@@ -28,9 +28,16 @@ class TestRemovePropertyService(unittest.IsolatedAsyncioTestCase):
 
     async def test_execute_with_valid_id(self):
         # Mock the property and image repositories to return valid data
-        self.property_repository_mock.find_by_id.return_value = Property(id=1, name="Test Property", bedrooms=2, bathrooms=1, description="Test Description")
+        self.property_repository_mock.find_by_id.return_value = Property(
+            id=1,
+            name="Test Property",
+            bedrooms=2,
+            bathrooms=1,
+            description="Test Description",
+        )
         self.image_repository_mock.find_all_by_property_id.return_value = [
-            Image(id=1, audio_hash="test_hash_1", url="test-url-1"), Image(id=2, audio_hash="test_hash_2", url="test-url-2")
+            Image(id=1, audio_hash="test_hash_1", url="test-url-1"),
+            Image(id=2, audio_hash="test_hash_2", url="test-url-2"),
         ]
 
         # Call the remove property service with a valid ID
@@ -52,4 +59,3 @@ class TestRemovePropertyService(unittest.IsolatedAsyncioTestCase):
         self.property_repository_mock.remove_by_id.assert_not_called()
         self.image_repository_mock.remove_by_property_id.assert_not_called()
         self.b2_mock.delete_file_by_audio_hash.assert_not_called()
-

@@ -29,38 +29,37 @@ property_router.add_api_route(
     methods=["DELETE"],
     status_code=200,
     responses={
-                    200: {
-                        "description": "Successful response",
-                        "content": {
-                            "application/json": {
-                                "example": {
-                                    "success": True,
-                                    "error": None,
-                                    "result": None,
-                                    "message": "property with `id` id has been removed"
-                                }
-                            }
-                        }
-                    },
-                    201: {},
-                    422: {},
-                    400: {},
-                    404: {
-                        "description": "Not found",
-                        "content": {
-                            "application/json": {
-                                "example": {
-                                    "success": False,
-                                    "error": {
-                                        "type": "not_found",
-                                        "description": "Property with `id` id not found"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    422: {},
-                },
+        200: {
+            "description": "Successful response",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "success": True,
+                        "error": None,
+                        "result": None,
+                        "message": "property with `id` id has been removed",
+                    }
+                }
+            },
+        },
+        201: {},
+        422: {},
+        400: {},
+        404: {
+            "description": "Not found",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "success": False,
+                        "error": {
+                            "type": "not_found",
+                            "description": "Property with `id` id not found",
+                        },
+                    }
+                }
+            },
+        },
+    },
     response_model=RemovePropertyResponse,
 )
 
@@ -90,19 +89,19 @@ property_router.add_api_route(
         },
         201: {},
         404: {
-                "description": "Not found",
-                    "content": {
-                        "application/json": {
-                            "example": {
-                                "success": False,
-                                "error": {
-                                    "type": "not_found",
-                                    "description": "Property with `id` id not found"
-                                }
-                            }
-                        }
+            "description": "Not found",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "success": False,
+                        "error": {
+                            "type": "not_found",
+                            "description": "Property with `id` id not found",
+                        },
                     }
-                },
+                }
+            },
+        },
         422: {},
     },
 )
@@ -137,14 +136,11 @@ property_router.add_api_route(
                                 "address": {
                                     "street_name": "",
                                     "number": 100,
-                                    "cep": "11111-111"
+                                    "cep": "11111-111",
                                 },
-                                "city": {
-                                    "name": "teste",
-                                    "state": "SP"
-                                }
-                                },
-                                {
+                                "city": {"name": "teste", "state": "SP"},
+                            },
+                            {
                                 "id": 2,
                                 "name": "property",
                                 "action": "rent",
@@ -159,12 +155,9 @@ property_router.add_api_route(
                                 "address": {
                                     "street_name": "test street",
                                     "number": 100,
-                                    "cep": "11111-112"
+                                    "cep": "11111-112",
                                 },
-                                "city": {
-                                    "name": "Ribeirão Preto",
-                                    "state": "SP"
-                                }
+                                "city": {"name": "Ribeirão Preto", "state": "SP"},
                             },
                         ],
                     },

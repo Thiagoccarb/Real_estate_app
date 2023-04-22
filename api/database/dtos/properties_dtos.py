@@ -12,6 +12,7 @@ class CreateProperty(BaseModel):
     bathrooms: int
     bedrooms: int
 
+
 class UpdateProperty(CreateProperty):
     name: Optional[str]
     action: Optional[str]

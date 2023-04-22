@@ -47,24 +47,26 @@ class TestUpdatePropertyService(unittest.IsolatedAsyncioTestCase):
         mock_property = CoroutineMock()
         mock_property.id = 1
         mock_property.address_id = 1
-        mock_property.name = 'test'
+        mock_property.name = "test"
         mock_property.price = 100
-        mock_property.type = 'apartment'
-        mock_property.action = 'rent'
+        mock_property.type = "apartment"
+        mock_property.action = "rent"
 
         self.property_repository_mock.find_by_id = CoroutineMock()
         self.property_repository_mock.find_by_id.return_value = mock_property
-        
-        mock_updated_address =UpdateAddressResponse(**{
-            "street_name": "street_name", 
-            "cep": "11111-111",
-            'city_id': 1,
-            "city": {
-                "name": mock_request_data["city"].get("name"),
-                "state": mock_request_data["city"].get("state"),
-            },
-        })
-        
+
+        mock_updated_address = UpdateAddressResponse(
+            **{
+                "street_name": "street_name",
+                "cep": "11111-111",
+                "city_id": 1,
+                "city": {
+                    "name": mock_request_data["city"].get("name"),
+                    "state": mock_request_data["city"].get("state"),
+                },
+            }
+        )
+
         self.update_address_service_mock.execute = CoroutineMock()
         self.update_address_service_mock.execute.return_value = mock_updated_address
 
@@ -76,7 +78,7 @@ class TestUpdatePropertyService(unittest.IsolatedAsyncioTestCase):
             mock_data.update(mock_request.address.dict(exclude_none=True))
         if mock_request.city:
             mock_data.update(mock_request.city.dict(exclude_none=True))
-            
+
         mock_update_data = {
             "street_name": mock_data.get("street_name"),
             "number": mock_data.get("number"),
@@ -88,20 +90,24 @@ class TestUpdatePropertyService(unittest.IsolatedAsyncioTestCase):
         }
         # call the method and verify the result
         await self.service.execute(mock_request, mock_property_id)
-        self.property_repository_mock.find_by_id.assert_called_once_with(mock_property_id)
+        self.property_repository_mock.find_by_id.assert_called_once_with(
+            mock_property_id
+        )
 
         # verify the calls to the repository and service methods
-        self.property_repository_mock.find_by_id.assert_called_once_with(mock_property_id)
-        self.update_address_service_mock.execute.assert_called_once_with(
-            mock_property.address_id,
-            UpdateAddressRequest(**mock_update_data)
+        self.property_repository_mock.find_by_id.assert_called_once_with(
+            mock_property_id
         )
-        
+        self.update_address_service_mock.execute.assert_called_once_with(
+            mock_property.address_id, UpdateAddressRequest(**mock_update_data)
+        )
+
         self.property_repository_mock.update_by_id.assert_called_once_with(
             id=mock_property_id, data=mock_request
         )
+
     async def test_execute_with_invalid_request_type(self):
-    # create a mock request with an invalid type
+        # create a mock request with an invalid type
         mock_request_data = {
             "name": "new name",
             "action": "rent",
@@ -124,26 +130,27 @@ class TestUpdatePropertyService(unittest.IsolatedAsyncioTestCase):
         mock_property = CoroutineMock()
         mock_property.id = 1
         mock_property.address_id = 1
-        mock_property.name = 'test'
+        mock_property.name = "test"
         mock_property.price = 100
-        mock_property.type = 'apartment'
-        mock_property.action = 'rent'
+        mock_property.type = "apartment"
+        mock_property.action = "rent"
 
         self.property_repository_mock.find_by_id = CoroutineMock()
         self.property_repository_mock.find_by_id.return_value = mock_property
-        
+
         # call the execute method and assert that the StatusError exception is raised
         with self.assertRaises(StatusError) as context:
             await self.service.execute(mock_request, mock_property_id)
 
         self.assertEqual(context.exception.status_code, 422)
-        self.assertEqual(context.exception.message, 'field `type` must be "apartment" or "house"')
+        self.assertEqual(
+            context.exception.message, 'field `type` must be "apartment" or "house"'
+        )
 
     async def test_execute_with_invalid_request_action(self):
-    # create a mock request with an invalid type
+        # create a mock request with an invalid type
         mock_request_data = {
             "name": "new name",
-            "action": "rent",
             "type": "apartment",
             "action": "invalid action",
             "description": "new description",
@@ -164,20 +171,22 @@ class TestUpdatePropertyService(unittest.IsolatedAsyncioTestCase):
         mock_property = CoroutineMock()
         mock_property.id = 1
         mock_property.address_id = 1
-        mock_property.name = 'test'
+        mock_property.name = "test"
         mock_property.price = 100
-        mock_property.type = 'apartment'
-        mock_property.action = 'rent'
+        mock_property.type = "apartment"
+        mock_property.action = "rent"
 
         self.property_repository_mock.find_by_id = CoroutineMock()
         self.property_repository_mock.find_by_id.return_value = mock_property
-        
+
         # call the execute method and assert that the StatusError exception is raised
         with self.assertRaises(StatusError) as context:
             await self.service.execute(mock_request, mock_property_id)
 
         self.assertEqual(context.exception.status_code, 422)
-        self.assertEqual(context.exception.message, 'field `action` must be "rent" or "sale"')
+        self.assertEqual(
+            context.exception.message, 'field `action` must be "rent" or "sale"'
+        )
 
     async def test_raises_not_found(self):
         mock_request_data = {
@@ -202,10 +211,11 @@ class TestUpdatePropertyService(unittest.IsolatedAsyncioTestCase):
         self.property_repository_mock.find_by_id = CoroutineMock()
         self.property_repository_mock.find_by_id.return_value = []
 
-
-       
         # call the method and verify the result
         with self.assertRaises(StatusError) as context:
             await self.service.execute(mock_request, mock_property_id)
             self.assertEqual(context.exception.status_code, 422)
-            self.assertEqual(context.exception.message, f'property with `id` {mock_property_id} not found')
+            self.assertEqual(
+                context.exception.message,
+                f"property with `id` {mock_property_id} not found",
+            )

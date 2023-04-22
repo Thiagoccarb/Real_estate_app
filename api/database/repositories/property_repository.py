@@ -87,7 +87,7 @@ class PropertiesRepository(AbstractPropertiesRepository):
             for q, v in queries.dict(exclude_none=True).items():
                 if q in ("sort", "limit", "offset", "order"):
                     continue
-                if q in ('price', 'bathrooms', 'bedrooms'):
+                if q in ("price", "bathrooms", "bedrooms"):
                     column = getattr(mappings.Property, q)
                     query = query.where(column >= v)
                 else:
@@ -95,7 +95,7 @@ class PropertiesRepository(AbstractPropertiesRepository):
                     query = query.where(column == v)
             if queries.sort:
                 sort_column = getattr(mappings.Property, queries.sort)
-                if queries.order == 'DESC':
+                if queries.order == "DESC":
                     query = query.order_by(sort_column.desc())
                 else:
                     query = query.order_by(sort_column.asc())

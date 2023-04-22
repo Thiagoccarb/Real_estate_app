@@ -14,10 +14,10 @@
 #             self.property_repository,
 #             self.add_address_service,
 #         )
-     
+
 #     @patch('services.address.create_address_service.AddAddressService.execute')
 #     async def test_create_property_with_success(self, mock_execute):
-        
+
 #         mock_request =CreatePropertyRequest(
 #           **{
 #             'name':'test',
@@ -38,7 +38,7 @@
 #             }
 #           }
 #         )
-        
+
 #         mock_execute.return_value = {
 #             'id': 1,
 #             'street_name': 'test',
@@ -53,6 +53,6 @@
 #         self.property_repository.add = CoroutineMock()
 
 #         await self.service.execute(mock_request)
-        
+
 #         mock_execute.assert_called_once()
 #         self.property_repository.add.assert_called_once()
