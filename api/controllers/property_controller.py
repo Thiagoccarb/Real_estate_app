@@ -1,5 +1,5 @@
 from typing import Optional
-from fastapi import Depends, Header, Query, Request
+from fastapi import Depends, Header, Query, Path, Request
 
 from errors.status_error import StatusError
 from utils.pagination import get_pagination_links
@@ -35,7 +35,7 @@ class PropertyController:
     async def find_all(
         self,
         request: Request,
-        id: Optional[int] = Query(None),
+        id: Optional[int] = None,
         type: Optional[str] = Query(None, regex="^(apartment|house)$"),
         action: Optional[str] = Query(None, regex="^(rent|sale)$"),
         sort: Optional[str] = Query(None, regex="^(name|price|bedrooms|bathrooms)$"),
@@ -62,7 +62,7 @@ class PropertyController:
 
     async def remove_by_id(
         self,
-        id: int = Query(..., gt=0),
+        id: int = Path(..., gt=0),
         add_property_service: RemovePropertyService = Depends(RemovePropertyService),
         auth_service: AuthService = Depends(AuthService),
         authorization=Header(None),
@@ -76,7 +76,7 @@ class PropertyController:
     async def update_by_id(
         self,
         request: UpdatePropertyRequest,
-        id: int = Query(..., gt=0),
+        id: int = Path(..., gt=0),
         update_property_service: UpdatePropertyService = Depends(UpdatePropertyService),
         auth_service: AuthService = Depends(AuthService),
         authorization=Header(None),
