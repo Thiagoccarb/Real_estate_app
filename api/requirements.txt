@@ -17,3 +17,4 @@ b2sdk
 pyjwt
 bcrypt
 cryptography
+asynctest
