@@ -38,4 +38,4 @@ class UserController:
         reset_password_service: ResetUserPasswordService = Depends(ResetUserPasswordService),
     ) -> None:
         await reset_password_service.execute(request, token)
-        return BaseResponse(success=True, message="user password has been successfully changed")
+        return BaseResponse(success=True, message="user password has been successfully changed.")
