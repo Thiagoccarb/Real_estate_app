@@ -10,5 +10,5 @@ class AuthController:
         request: UserCredentialsRequest,
         login_service: AuthService = Depends(AuthService),
     ) -> str:
-        token = await login_service.execute(request, decode=False)
+        token = await login_service.execute(request=request, decode=False)
         return UserCredentialsResponse(result={"token": token})

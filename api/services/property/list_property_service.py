@@ -1,10 +1,9 @@
-from typing import List
+from typing import List, Tuple
 from fastapi import Depends
 
-from schemas.property_schemas import CreatePropertyRequest, Property
-from database.repositories.address_repository import AddressesRepository
+from schemas.base import ListPropertyQueries
+from schemas.property_schemas import Property
 from database.repositories.property_repository import PropertiesRepository
-from errors.status_error import StatusError
 
 
 class ListPropertyService:
@@ -14,6 +13,6 @@ class ListPropertyService:
     ):
         self.property_repository = property_repository
 
-    async def execute(self) -> List[Property]:
-        properties = await self.property_repository.find_all()
-        return properties
+    async def execute(self, queries: ListPropertyQueries) -> Tuple[List[Property], int]:
+        properties, count = await self.property_repository.find_all(queries)
+        return properties, count

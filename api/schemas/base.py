@@ -5,7 +5,13 @@ from pydantic import BaseModel
 class BaseResponse(BaseModel):
     success: Optional[bool] = True
     error: Optional[Any] = None
-    result: Optional[Any]
+    result: Optional[Any] = None
+    message: Optional[str] = None
+
+
+class BasePaginatedResponse(BaseResponse):
+    next_page: Optional[str]
+    previous_page: Optional[str]
 
 
 class Error(BaseModel):
@@ -31,3 +37,16 @@ class MissingFieldErrorSchema(BaseModel):
                 },
             }
         }
+
+
+class ListPropertyQueries(BaseModel):
+    id: Optional[int]
+    type: Optional[str]
+    action: Optional[str]
+    price: Optional[float]
+    bathrooms: Optional[int]
+    bedrooms: Optional[int]
+    order: Optional[str]
+    sort: Optional[str]
+    offset: Optional[int]
+    limit: Optional[int]

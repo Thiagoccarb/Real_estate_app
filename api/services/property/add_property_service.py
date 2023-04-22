@@ -1,8 +1,12 @@
 from fastapi import Depends
 
-from schemas.property_schemas import CreatePropertyRequest, Property
-from database.repositories.address_repository import AddressesRepository
+from schemas.address_schema import CreateAddressRequest
+from schemas.property_schemas import CreatePropertyRequest, CreatedProperty, Property
+from services.address.create_address_service import AddAddressService
+from database.dtos.addresses_dtos import AddressWithCity, AddressWithoutId
+from database.dtos.properties_dtos import CreateProperty
 from database.repositories.property_repository import PropertiesRepository
+from database.dtos.cities_dtos import CreateCity
 from errors.status_error import StatusError
 
 
@@ -10,10 +14,10 @@ class AddPropertyService:
     def __init__(
         self,
         property_repository: PropertiesRepository = Depends(PropertiesRepository),
-        address_repository: AddressesRepository = Depends(AddressesRepository),
+        add_address_service: AddAddressService = Depends(AddAddressService),
     ):
         self.property_repository = property_repository
-        self.address_repository = address_repository
+        self.add_address_service = add_address_service
 
     async def execute(self, request: CreatePropertyRequest) -> Property:
         if request.type not in ("apartment", "house"):
@@ -28,14 +32,41 @@ class AddPropertyService:
                 'field `action` must be "rent" or "sale"', 422, "unprocessable_entity"
             )
 
-        existing_address = await self.address_repository.find_by_id(request.address_id)
-        if not existing_address:
-            raise StatusError(
-                "address with `address_id not found` {id}",
-                404,
-                "unprocessable_entity",
-                id=request.address_id,
+        new_address_data: AddressWithCity = await self.add_address_service.execute(
+            CreateAddressRequest(
+                street_name=request.address.street_name,
+                number=request.address.number,
+                cep=request.address.cep,
+                city_data=CreateCity(name=request.city.name, state=request.city.state),
             )
-
-        new_property = await self.property_repository.add(data=request)
-        return new_property
+        )
+        new_property: Property = await self.property_repository.add(
+            data=CreateProperty(
+                name=request.name,
+                action=request.action,
+                type=request.type,
+                address_id=new_address_data.id,
+                price=request.price,
+                description=request.description,
+                bedrooms=request.bedrooms,
+                bathrooms=request.bathrooms,
+            )
+        )
+        return CreatedProperty(
+            id=new_property.id,
+            name=new_property.name,
+            action=new_property.action,
+            type=new_property.type,
+            price=new_property.price,
+            description=new_property.description,
+            bedrooms=new_property.bedrooms,
+            bathrooms=new_property.bathrooms,
+            address=AddressWithoutId(
+                street_name=new_address_data.street_name,
+                number=new_address_data.number,
+                cep=new_address_data.cep,
+            ),
+            city=CreateCity(
+                name=new_address_data.city.name, state=new_address_data.city.state
+            ),
+        )

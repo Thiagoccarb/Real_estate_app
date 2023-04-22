@@ -1,4 +1,5 @@
 fastapi
+fastapi_mail
 uvicorn
 sqlalchemy
 pydantic[dotenv]
@@ -15,3 +16,5 @@ black
 b2sdk
 pyjwt
 bcrypt
+cryptography
+asynctest

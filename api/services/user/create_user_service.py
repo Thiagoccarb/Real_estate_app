@@ -18,7 +18,8 @@ class AddUserService:
 
     async def execute(self, request: CreateUserRequest) -> User:
         if not re.match(
-            r"^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.(com|com\.br|net)$", request.email
+            r"^[a-zA-Z0-9]+([._]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+\.(com|com\.br|net)$",
+            request.email,
         ):
             raise StatusError(
                 "field `email` must be like user@gmail.com (e.g:userEmail123@gmail.com, us123Et@yahoo.com.br, us123Et@yahoo.com.br)",

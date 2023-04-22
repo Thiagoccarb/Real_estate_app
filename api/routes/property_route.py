@@ -1,7 +1,12 @@
 from fastapi.routing import APIRouter
 
-from schemas.base import MissingFieldErrorSchema
-from schemas.property_schemas import CreatePropertyResponse, ListPropertyResponse
+from schemas.property_schemas import (
+    CreatePropertyResponse,
+    ListPropertyResponse,
+    RemovePropertyResponse,
+    UpdatePropertyRequest,
+    UpdatePropertyResponse,
+)
 from controllers.property_controller import PropertyController
 
 
@@ -16,6 +21,89 @@ property_router.add_api_route(
     methods=["POST"],
     status_code=201,
     response_model=CreatePropertyResponse,
+)
+
+property_router.add_api_route(
+    "/{id}",
+    property_controller.remove_by_id,
+    methods=["DELETE"],
+    status_code=200,
+    responses={
+        200: {
+            "description": "Successful response",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "success": True,
+                        "error": None,
+                        "result": None,
+                        "message": "property with `id` id has been removed",
+                    }
+                }
+            },
+        },
+        201: {},
+        422: {},
+        400: {},
+        404: {
+            "description": "Not found",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "success": False,
+                        "error": {
+                            "type": "not_found",
+                            "description": "Property with `id` id not found",
+                        },
+                    }
+                }
+            },
+        },
+    },
+    response_model=RemovePropertyResponse,
+)
+
+property_router.add_api_route(
+    "/{id}",
+    property_controller.update_by_id,
+    methods=["PATCH"],
+    status_code=200,
+    response_model=UpdatePropertyResponse,
+    responses={
+        200: {
+            "success": True,
+            "error": None,
+            "result": {
+                "name": "property",
+                "action": "rent",
+                "type": "apartment",
+                "updated_at": "2023-04-16T22:10:01.543187",
+                "description": "beautiful house",
+                "bathrooms": 4,
+                "bedrooms": 3,
+                "price": 10000.0,
+                "address": {"street_name": "test", "cep": "11111-111"},
+                "city": {"name": "São Paulo", "state": "SP"},
+            },
+            "message": None,
+        },
+        201: {},
+        404: {
+            "description": "Not found",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "success": False,
+                        "error": {
+                            "type": "not_found",
+                            "description": "Property with `id` id not found",
+                        },
+                    }
+                }
+            },
+        },
+        422: {},
+    },
 )
 
 property_router.add_api_route(
@@ -35,28 +123,41 @@ property_router.add_api_route(
                         "result": [
                             {
                                 "id": 1,
-                                "name": "house 1",
-                                "action": None,
-                                "type": None,
-                                "address_id": None,
-                                "created_at": "2023-02-26T19:19:39",
+                                "name": "property",
+                                "action": "sale",
+                                "type": "apartment",
+                                "created_at": "2023-03-30T02:19:29",
                                 "updated_at": None,
-                                "image_ids": [
-                                    1,
-                                    2,
-                                    3,
-                                    4,
-                                ],
+                                "price": 100000,
+                                "bedrooms": 0,
+                                "bathrooms": 0,
+                                "description": "",
+                                "image_urls": [],
+                                "address": {
+                                    "street_name": "",
+                                    "number": 100,
+                                    "cep": "11111-111",
+                                },
+                                "city": {"name": "teste", "state": "SP"},
                             },
                             {
-                                "id": 11,
+                                "id": 2,
                                 "name": "property",
                                 "action": "rent",
                                 "type": "apartment",
-                                "address_id": 10,
-                                "created_at": "2023-03-13T23:42:10",
+                                "created_at": "2023-04-11T01:55:47",
                                 "updated_at": None,
-                                "image_ids": [],
+                                "price": 200000,
+                                "bedrooms": 3,
+                                "bathrooms": 4,
+                                "description": "beautiful house",
+                                "image_urls": [],
+                                "address": {
+                                    "street_name": "test street",
+                                    "number": 100,
+                                    "cep": "11111-112",
+                                },
+                                "city": {"name": "Ribeirão Preto", "state": "SP"},
                             },
                         ],
                     },
@@ -65,6 +166,19 @@ property_router.add_api_route(
         },
         201: {
             "description": "Not Available",
+        },
+        400: {
+            "description": "invalid_query",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "success": True,
+                        "error": {
+                            "description": "Query limit must be no greater than 50"
+                        },
+                    },
+                }
+            },
         },
     },
 )

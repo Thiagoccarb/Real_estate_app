@@ -48,11 +48,23 @@ app_router.include_router(
                     "example": {
                         "success": True,
                         "error": None,
-                        "result": {
-                            "id": 1,
-                            "name": "city_name",
-                            "state": "state",
-                        },
+                        "result": [
+                            {
+                                "url": "https://f005.backblazeb2.com/file/real-state/bf57211413e99a76a9721d93d25024b7",
+                                "created_at": "2023-03-26T21:46:20",
+                                "audio_hash": "bf57211413e99a76a9721d93d25024b7",
+                                "position": 1,
+                                "is_active": True,
+                            },
+                            {
+                                "url": "https://f005.backblazeb2.com/file/real-state/060a372115181772a9946fdaef330985",
+                                "created_at": "2023-03-26T21:18:01",
+                                "audio_hash": "060a372115181772a9946fdaef330985",
+                                "position": 2,
+                                "is_active": True,
+                            },
+                        ],
+                        "message": None,
                     },
                 }
             },
@@ -176,6 +188,9 @@ app_router.include_router(
     user_router,
     responses={
         200: {
+            "description": "N/A",
+        },
+        201: {
             "description": "user created",
             "content": {
                 "application/json": {
