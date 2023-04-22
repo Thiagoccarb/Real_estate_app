@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+  backend:
+    build: ./api
+    networks:
+      - deploy_fast_api_project
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - ./api/.env
+    environment:
+      - API_DB_HOST=db
+  db:
+    container_name: db
+    image: mysql
+    env_file:
+      - ./api/.env
+    ports:
+        - "3306:3306"
+    networks:
+      - deploy_fast_api_project
+    healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        timeout: 10s
+        retries: 5
+
+networks:
+  deploy_fast_api_project:
+    driver: bridge
