@@ -44,7 +44,7 @@ jobs:
         PYTHONPATH: $PYTHONPATH:./api
       run: |
         cd api
-        python -m pytest
+        python -m unittest
     - name: Run flake8
       
       run: |
