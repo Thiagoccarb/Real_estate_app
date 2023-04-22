@@ -1,65 +1,28 @@
-import pytest
 from typing import List, Tuple
-from unittest.mock import Mock
+from unittest import IsolatedAsyncioTestCase
+from unittest.mock import MagicMock
 
 from schemas.base import ListPropertyQueries
 from schemas.property_schemas import Property
-from database.repositories.property_repository import PropertiesRepository
 from services.property.list_property_service import ListPropertyService
+from database.repositories.property_repository import PropertiesRepository
 
-@pytest.fixture
-def fake_property_repository():
-    class FakePropertyRepository(PropertiesRepository):
-        async def find_all(self, queries: ListPropertyQueries) -> Tuple[List[Property], int]:
-            properties = [
-                Property(
-                    id=1,
-                    name="Property 1",
-                    action="rent",
-                    type="apartment",
-                    description="This is a nice apartment",
-                    price=1000.0,
-                    bathrooms=2,
-                    bedrooms=3,
-                    address_id=1,
-                    created_at="2022-04-11T22:28:20.532",
-                    updated_at="2022-04-11T22:28:20.532",
-                    street_name="Test Street",
-                    cep="12345-678",
-                    number="123",
-                    city_name="Test City",
-                    state="TS",
-                ),
-                Property(
-                    id=2,
-                    name="Property 2",
-                    action="rent",
-                    type="apartment",
-                    description="This is another nice apartment",
-                    price=1500.0,
-                    bathrooms=3,
-                    bedrooms=4,
-                    address_id=2,
-                    created_at="2022-04-11T22:28:20.532",
-                    updated_at="2022-04-11T22:28:20.532",
-                    street_name="Test Street",
-                    cep="12345-678",
-                    number="456",
-                    city_name="Test City",
-                    state="TS",
-                ),
-            ]
-            return properties, len(properties)
-    return FakePropertyRepository()
 
-@pytest.fixture
-def list_property_service(fake_property_repository):
-    return ListPropertyService(property_repository=fake_property_repository)
+class TestListPropertyService(IsolatedAsyncioTestCase):
+    async def test_execute_with_valid_queries(self):
+        # Arrange
+        queries = ListPropertyQueries(limit=10, offset=0)
+        properties = [Property(id=1, name="Test Property 1", bedrooms=1, bathrooms=1, description="test"), Property(id=2, name="Test Property 2",bedrooms=1, bathrooms=1, description="test")]
+        count = 2
 
-@pytest.mark.asyncio
-async def test_list_all_properties(list_property_service):
-    queries = ListPropertyQueries()
-    properties, count = await list_property_service.execute(queries)
+        property_repository_mock = MagicMock(spec=PropertiesRepository)
+        property_repository_mock.find_all.return_value = (properties, count)
 
-    assert len(properties) == 2
-    assert count == 2
+        service = ListPropertyService(property_repository=property_repository_mock)
+
+        # Act
+        result = await service.execute(queries)
+
+        # Assert
+        property_repository_mock.find_all.assert_called_once_with(queries)
+        self.assertEqual(result, (properties, count))
