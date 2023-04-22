@@ -7,7 +7,7 @@ from database.dtos.addresses_dtos import AddressWithCity
 from database.dtos.cities_dtos import CreateCity
 from schemas.address_schema import CreateAddressRequest, Address
 from schemas.city_schemas import City
-from api.services.address.create_address_service import AddAddressService
+from services.address.create_address_service import AddAddressService
 from errors.status_error import StatusError
 
 
