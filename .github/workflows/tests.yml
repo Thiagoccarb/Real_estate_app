@@ -8,7 +8,19 @@ env:
   API_DB_USER: root
   API_DB_PASSWORD: ${{ secrets.API_DB_PASSWORD }}
   API_DB_DATABASE: imob
-
+  B2_KEY_ID: 5ac6a8f9b42d
+  B2_APPLICATION_KEY: 005497b64702e5260c1f6a647144f2fc5e971e97f1
+  BUCKET_NAME: real-state
+  B2_CLUSTER_NUMBER: 005
+  SECRET_KEY : 12345asdfcg45
+  MAIL_USERNAME : real.state.api1@gmail.com
+  MAIL_PASSWORD : lpeynsuzqvnakmrq
+  MAIL_FROM : real.state.api1@gmail.com
+  MAIL_PORT : 465
+  MAIL_SERVER : smtp.gmail.com
+  MAIL_FROM_NAME : password recovery
+  BASE_URL : http://localhost:5000
+  MYSQL_ROOT_PASSWORD : 12345
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -33,11 +45,37 @@ jobs:
         API_DB_USER: ${{ env.API_DB_USER }}
         API_DB_PASSWORD: ${{ env.API_DB_PASSWORD }}
         API_DB_DATABASE: ${{ env.API_DB_DATABASE }}
+        B2_KEY_ID: ${{ secrets.B2_KEY_ID }}
+        B2_APPLICATION_KEY: ${{ secrets.B2_APPLICATION_KEY }}
+        BUCKET_NAME: ${{ env.BUCKET_NAME }}
+        B2_CLUSTER_NUMBER: ${{ env.B2_CLUSTER_NUMBER }}
+        SECRET_KEY: ${{ secrets.SECRET_KEY }}
+        MAIL_USERNAME: ${{ env.MAIL_USERNAME }}
+        MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+        MAIL_FROM: ${{ env.MAIL_FROM }}
+        MAIL_PORT: ${{ env.MAIL_PORT }}
+        MAIL_SERVER: ${{ env.MAIL_SERVER }}
+        MAIL_FROM_NAME: ${{ env.MAIL_FROM_NAME }}
+        BASE_URL: ${{ env.BASE_URL }}
+        MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
       run: |
         echo "API_DB_HOST=${API_DB_HOST}" >> $GITHUB_ENV
         echo "API_DB_USER=${API_DB_USER}" >> $GITHUB_ENV
         echo "API_DB_PASSWORD=${API_DB_PASSWORD}" >> $GITHUB_ENV
         echo "API_DB_DATABASE=${API_DB_DATABASE}" >> $GITHUB_ENV
+        echo "B2_KEY_ID=${B2_KEY_ID}" >> $GITHUB_ENV
+        echo "B2_APPLICATION_KEY=${B2_APPLICATION_KEY}" >> $GITHUB_ENV
+        echo "BUCKET_NAME=${BUCKET_NAME}" >> $GITHUB_ENV
+        echo "B2_CLUSTER_NUMBER=${B2_CLUSTER_NUMBER}" >> $GITHUB_ENV
+        echo "SECRET_KEY=${SECRET_KEY}" >> $GITHUB_ENV
+        echo "MAIL_USERNAME=${MAIL_USERNAME}" >> $GITHUB_ENV
+        echo "MAIL_PASSWORD=${MAIL_PASSWORD}" >> $GITHUB_ENV
+        echo "MAIL_FROM=${MAIL_FROM}" >> $GITHUB_ENV
+        echo "MAIL_PORT=${MAIL_PORT}" >> $GITHUB_ENV
+        echo "MAIL_SERVER=${MAIL_SERVER}" >> $GITHUB_ENV
+        echo "MAIL_FROM_NAME=${MAIL_FROM_NAME}" >> $GITHUB_ENV
+        echo "BASE_URL=${BASE_URL}" >> $GITHUB_ENV
+        echo "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}" >> $GITHUB_ENV
 
     - name: Run tests
       env:

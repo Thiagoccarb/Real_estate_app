@@ -41,12 +41,12 @@ class Settings(BaseSettings):
     API_DB_DATABASE: str = API_DB_DATABASE
 
     # email
-    MAIL_USERNAME: str = MAIL_USERNAME or 'test'
-    MAIL_PASSWORD: str = MAIL_PASSWORD  or 'test'
-    MAIL_FROM: str = MAIL_FROM  or 'test'
-    MAIL_PORT: str = MAIL_PORT  or 'test'
-    MAIL_SERVER: str = MAIL_SERVER  or 'test'
-    MAIL_FROM_NAME: str = MAIL_FROM_NAME  or 'test'
+    MAIL_USERNAME: str = MAIL_USERNAME
+    MAIL_PASSWORD: str = MAIL_PASSWORD
+    MAIL_FROM: str = MAIL_FROM
+    MAIL_PORT: str = MAIL_PORT
+    MAIL_SERVER: str = MAIL_SERVER
+    MAIL_FROM_NAME: str = MAIL_FROM_NAME
 
 
 settings = Settings()
