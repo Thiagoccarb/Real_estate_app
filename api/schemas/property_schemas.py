@@ -51,9 +51,9 @@ class UpdatePropertyRequest(BaseModel):
     price: Optional[float]
     address: Optional[UpdateAddress]
     city: Optional[UpdateCity]
-    description: str
-    bathrooms: int
-    bedrooms: int
+    description: Optional[str]
+    bathrooms: Optional[int]
+    bedrooms: Optional[int]
     
     class Config:
         schema_extra = {
