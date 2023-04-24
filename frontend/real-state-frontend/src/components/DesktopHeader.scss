@@ -1,0 +1,15 @@
+#logo {
+  animation: fadeInFromRight 1s ease-in-out; // add animation property
+}
+
+@keyframes fadeInFromRight { // define keyframes animation
+  0% {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
