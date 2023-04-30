@@ -1,0 +1,62 @@
+.zoomIn {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: transform 10s;
+  transform: scale(1.1);
+}
+
+.zoomOut {
+  transform: scale(1.0);
+}
+
+.hero-container {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -5%;
+    opacity: 0.5;
+    left: 20%;
+    height: 110%;
+    max-height: calc(782px * 1.1);
+    width: 45%;
+    background: red;
+    z-index: 3;
+  }
+}
+
+.hero {
+  width: 100%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+  height: calc(100vw / 1.8);
+  max-height: 782px;
+  overflow: hidden;
+
+  &::after {
+    content: "O melhor lugar para o seu investimento";
+    position: absolute;
+    color: white;
+    // font-family: Helvetica;
+    font-size: 6vmin;
+    font-weight: 700;
+    top: 30%;
+    left: 20%;
+    width: 40%;
+    z-index: 3;
+    margin: 10px;
+    animation: slideIn 1s ease-in-out forwards;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 20%;
+  }
+}
