@@ -1,4 +1,5 @@
 fastapi
+fastapi_mail
 uvicorn
 sqlalchemy
 pydantic[dotenv]
@@ -13,3 +14,7 @@ pytest-asyncio
 flake8
 black
 b2sdk
+pyjwt
+bcrypt
+cryptography
+asynctest

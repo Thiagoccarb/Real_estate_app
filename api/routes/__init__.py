@@ -5,6 +5,9 @@ from routes.property_route import property_router
 from routes.image_route import image_router
 from routes.city_route import city_router
 from routes.address_route import address_router
+from routes.auth_route import auth_router
+from routes.user_route import user_router
+
 
 app_router = APIRouter(redirect_slashes=True)
 
@@ -45,11 +48,23 @@ app_router.include_router(
                     "example": {
                         "success": True,
                         "error": None,
-                        "result": {
-                            "id": 1,
-                            "name": "city_name",
-                            "state": "state",
-                        },
+                        "result": [
+                            {
+                                "url": "https://f005.backblazeb2.com/file/real-state/bf57211413e99a76a9721d93d25024b7",
+                                "created_at": "2023-03-26T21:46:20",
+                                "audio_hash": "bf57211413e99a76a9721d93d25024b7",
+                                "position": 1,
+                                "is_active": True,
+                            },
+                            {
+                                "url": "https://f005.backblazeb2.com/file/real-state/060a372115181772a9946fdaef330985",
+                                "created_at": "2023-03-26T21:18:01",
+                                "audio_hash": "060a372115181772a9946fdaef330985",
+                                "position": 2,
+                                "is_active": True,
+                            },
+                        ],
+                        "message": None,
                     },
                 }
             },
@@ -119,6 +134,76 @@ app_router.include_router(
                             "city_id": 1,
                             "number": 123,
                             "cep": "11111-111",
+                        },
+                    },
+                }
+            },
+        },
+        400: {
+            "description": "missing_field",
+            "model": MissingFieldErrorSchema,
+        },
+        422: {},
+    },
+)
+
+app_router.include_router(
+    auth_router,
+    responses={
+        200: {
+            "description": "token granted",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "success": True,
+                        "error": None,
+                        "result": {"token": "eyJhbGc..."},
+                    },
+                }
+            },
+        },
+        400: {
+            "description": "missing_field",
+            "model": MissingFieldErrorSchema,
+        },
+        401: {
+            "description": "unauthorized",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "success": False,
+                        "error": {
+                            "type": "invalid_credentials",
+                            "description": "invalid credentials",
+                        },
+                    },
+                },
+            },
+        },
+        422: {},
+    },
+)
+
+app_router.include_router(
+    user_router,
+    responses={
+        200: {
+            "description": "N/A",
+        },
+        201: {
+            "description": "user created",
+            "content": {
+                "application/json": {
+                    "example": {
+                        "success": True,
+                        "error": None,
+                        "result": {
+                            "id": 1,
+                            "username": "username",
+                            "email": "email",
+                            "password": "password",
+                            "created_at": "2023-03-08T17:19:19",
+                            "updated_at": None,
                         },
                     },
                 }

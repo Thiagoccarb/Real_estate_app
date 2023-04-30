@@ -12,6 +12,5 @@ class AddCityService:
         self.city_repository = city_repository
 
     async def execute(self, request: CreateCityRequest) -> City:
-
         new_city = await self.city_repository.add(data=request)
         return new_city
