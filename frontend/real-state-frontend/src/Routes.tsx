@@ -1,9 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Suspense } from 'react';
+import { Suspense, useContext } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import Home from './pages/home/Home';
+import DeskTopHeader from "./components/header/DesktopHeader";
+import MobileHeader from "./components/header/MobileHeader";
+import { AppContext, AppContextType } from "./context/appContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,11 +33,14 @@ function ErrorFallback() {
 }
 
 const AppRoutes = () => {
+  const { isMobileScreen } = useContext<AppContextType>(AppContext);
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
         <ErrorBoundary FallbackComponent={ErrorFallback}>
           <Suspense fallback={<div>Loading...</div>}>
+            {isMobileScreen && <MobileHeader />}
+            {!isMobileScreen && <DeskTopHeader />}
             <Routes>
               <Route path="/home" element={<Home />} />
             </Routes>

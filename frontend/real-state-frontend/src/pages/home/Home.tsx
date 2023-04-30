@@ -1,11 +1,8 @@
-import { useContext, useEffect } from 'react';
 import { Box } from '@material-ui/core';
 import { useQuery } from 'react-query';
 
 import Hero from './components/Hero';
-import { AppContext, AppContextType } from '../../context/appContext';
-import DeskTopHeader from '../../components/header/DesktopHeader';
-import MobileHeader from '../../components/header/MobileHeader';
+import { Outlet } from 'react-router-dom';
 
 const BASE_URL = import.meta.env.VITE_BASE_URL
 
@@ -19,19 +16,10 @@ function Home() {
     return request.json()
   });
 
-  const { isMobileScreen } = useContext<AppContextType>(AppContext);
-  console.log(data)
-
-  useEffect(() => {
-    return () => {
-      abortController.abort();
-    };
-  }, []);
 
   return (
     <>
-      {isMobileScreen && <MobileHeader />}
-      {!isMobileScreen && <DeskTopHeader />}
+      <Outlet />
       <Box
         component="section"
         display="flex"
