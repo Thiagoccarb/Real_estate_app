@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Box } from '@material-ui/core';
 import { useQuery } from 'react-query';
 
@@ -21,6 +21,12 @@ function Home() {
 
   const { isMobileScreen } = useContext<AppContextType>(AppContext);
   console.log(data)
+
+  useEffect(() => {
+    return () => {
+      abortController.abort();
+    };
+  }, []);
 
   return (
     <>
