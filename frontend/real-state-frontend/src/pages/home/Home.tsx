@@ -7,17 +7,19 @@ import { AppContext, AppContextType } from '../../context/appContext';
 import DeskTopHeader from '../../components/header/DesktopHeader';
 import MobileHeader from '../../components/header/MobileHeader';
 
+const BASE_URL = import.meta.env.VITE_BASE_URL
+
 function Home() {
-  const { isMobileScreen } = useContext<AppContextType>(AppContext);
   const abortController = new AbortController();
   const abortSignal = abortController.signal;
 
   const { data } = useQuery('my-data', async () => {
-    const url = "https://v2.jokeapi.dev/joke/Any";
+    const url = `${BASE_URL}/properties`;
     const request = await fetch(url, { signal: abortSignal });
     return request.json()
   });
 
+  const { isMobileScreen } = useContext<AppContextType>(AppContext);
   console.log(data)
 
   return (
