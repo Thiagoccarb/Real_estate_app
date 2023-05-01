@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { Stack, Button } from '@mui/material';
 
 import Divider from '@mui/material/Divider';
@@ -6,12 +7,14 @@ import '../DesktopHeader.scss'
 import { theme, useStyles } from '../../styles/styles';
 import { createHoverUnderlineEffect } from '../../styles/effects';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { AppContextType, AppContext } from '../../context/appContext';
 
 type Item = {
   items: string[]
 }
 
 function NavList({ items }: Item) {
+  const { handleModal } = useContext<AppContextType>(AppContext);
   const { pathname } = useLocation();
   const [, path] = pathname.split('/')
 
@@ -47,6 +50,17 @@ function NavList({ items }: Item) {
           </Button>
         ))
       }
+      <Button
+        component="li"
+        color='inherit'
+        disableRipple
+        disableFocusRipple={true}
+        className={classes.navButton}
+        sx={greenHoverEffectCss}
+        onClick={() => handleModal(true)}
+      >
+        login
+      </Button>
     </Stack>
   )
 }
