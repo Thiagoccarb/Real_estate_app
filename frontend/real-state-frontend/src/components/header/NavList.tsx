@@ -8,12 +8,16 @@ import { theme, useStyles } from '../../styles/styles';
 import { createHoverUnderlineEffect } from '../../styles/effects';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AppContextType, AppContext } from '../../context/appContext';
+import { AvatarLoginListItem } from './AvatarLoginListItem';
+
+import { useCookie } from '../../hooks/useCookie';
 
 type Item = {
   items: string[]
 }
 
 function NavList({ items }: Item) {
+  const [cookieValue, _] = useCookie('credentials');
   const { handleModal } = useContext<AppContextType>(AppContext);
   const { pathname } = useLocation();
   const [, path] = pathname.split('/')
@@ -50,17 +54,24 @@ function NavList({ items }: Item) {
           </Button>
         ))
       }
-      <Button
-        component="li"
-        color='inherit'
-        disableRipple
-        disableFocusRipple={true}
-        className={classes.navButton}
-        sx={greenHoverEffectCss}
-        onClick={() => handleModal(true)}
-      >
-        login
-      </Button>
+      {
+        !cookieValue && (
+          <Button
+            component="li"
+            color='inherit'
+            disableRipple
+            disableFocusRipple={true}
+            className={classes.navButton}
+            sx={greenHoverEffectCss}
+            onClick={() => handleModal(true)}
+          >
+            login
+          </Button>
+        )
+      }
+      {
+        cookieValue && <AvatarLoginListItem />
+      }
     </Stack>
   )
 }
