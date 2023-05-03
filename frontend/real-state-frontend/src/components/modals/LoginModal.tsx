@@ -9,10 +9,12 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import './LoginModal.scss';
 import CustomModal from './CustomModal';
-import { submitCredentials } from '../../utils/api';
+import { login } from '../../utils/api';
+import { useCookie } from '../../hooks/useCookie';
 
 export default function LoginModal() {
   const { isOpenLoginModal, handleModal } = React.useContext<AppContextType>(AppContext);
+  const [, updateCookie] = useCookie('credentials');
 
   const [responseStatus, setResponseStatus] = React.useState<number | undefined>(undefined);
   const [isSubmiting, setIsSubmiting] = React.useState<boolean>(false);
@@ -68,7 +70,14 @@ export default function LoginModal() {
     const isValid = validateCredentials();
     if (isValid) {
       setIsSubmiting(true)
-      const response = await submitCredentials(credentials);
+      const response = await login(credentials);
+      if(response?.status === 200) {
+        const data = {
+          username: credentials.username,
+          token: response?.result?.token
+        }
+        updateCookie(data)
+      }
       setTimeout(() => setIsSubmiting(false), 1500);
       setTimeout(() => setResponseStatus(response?.status), 1500);
     }
@@ -168,23 +177,15 @@ export default function LoginModal() {
             />
           </Box>
           {
-            responseStatus === 201
+            responseStatus === 200
             && (
               <Typography component="h3" width="100%" mt={2} textAlign="center" color="red">
-                Usuário criado com sucesso!
+                Usuário logado com sucesso!
               </Typography>
             )
           }
           {
-            (responseStatus === 422)
-            && (
-              <Typography component="h3" width="100%" mt={2} textAlign="center" color="red">
-                Email já cadastrado, tente novamente usando outro email.
-              </Typography>
-            )
-          }
-          {
-            (responseStatus !== 201 && responseStatus !== 422 && responseStatus)
+            (responseStatus !== 200 && responseStatus)
             && (
               <Typography component="h3" width="100%" mt={2} textAlign="center" color="red">
                 Houve um error ao enviar os dados, por favor tente novamente.
