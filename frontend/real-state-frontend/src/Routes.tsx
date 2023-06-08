@@ -5,8 +5,9 @@ import { ErrorBoundary } from 'react-error-boundary';
 
 import Home from './pages/home/Home';
 import DeskTopHeader from "./components/header/DesktopHeader";
-import MobileHeader from "./components/header/MobileHeader";
+import { MobileHeader } from "./components/header/MobileHeader";
 import { AppContext, AppContextType } from "./context/appContext";
+import AddProperty from "./pages/adminPage/AddProperty";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,6 +43,7 @@ const AppRoutes = () => {
             {isMobileScreen && <MobileHeader />}
             {!isMobileScreen && <DeskTopHeader />}
             <Routes>
+              <Route path="/logged/add-property" element={<AddProperty />} />
               <Route path="/home" element={<Home />} />
             </Routes>
           </Suspense>

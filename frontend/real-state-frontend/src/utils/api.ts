@@ -1,22 +1,31 @@
+import { IProperty } from "../pages/adminPage/components/interfaces";
+import { Cookies } from 'react-cookie';
+const cookies = new Cookies();
+const credentials = 'credentials';
+
+const getCookie = async () => cookies.get(credentials);
+
 const BASE_URL = import.meta.env.VITE_BASE_URL
 
 interface IResponse {
   success: boolean;
-  status: number;
-  error: any;
-  result: {
-    token: string
-  },
+  error: any | null;
+  message: string | null
+  result: any;
+  status?: number;
+
 }
 
 export const submitCredentials = async (data: { email: string, password: string, username: string }) => {
+
   try {
     const url = `${BASE_URL}/users`;
     const request = await fetch(url, {
       method: "POST",
       body: JSON.stringify(data),
       headers: new Headers({
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'authorization': 'cookieValue.token'
       }),
     });
 
@@ -35,6 +44,31 @@ export const login = async (data: { email: string, password: string, username: s
       body: JSON.stringify(data),
       headers: new Headers({
         'Content-Type': 'application/json'
+      }),
+    });
+    const response = await request.json()
+    return {
+      ...response,
+      status: request?.status
+    }
+  } catch (error) {
+    return null
+  }
+}
+
+export const createProperty = async (
+  data: IProperty
+): Promise<null | IResponse> => {
+  const {token} = await getCookie();
+  console.log(token)
+  try {
+    const url = `${BASE_URL}/properties`;
+    const request = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': token,
       }),
     });
     const response = await request.json()
