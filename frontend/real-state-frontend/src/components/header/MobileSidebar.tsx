@@ -19,9 +19,10 @@ export function MobileSidebar({ toggleMenu, isMenuOpen }: IProps) {
 
   const handleLogout = () => {
     removeCookie('credentials');
-    setTimeout(() =>navigate('/home'), 1500);
+    setTimeout(() => navigate('/home'), 1500);
+    toggleMenu();
   };
-  
+
   return (
     <Drawer anchor='right' open={isMenuOpen} onClose={toggleMenu}>
       <List>
@@ -31,31 +32,31 @@ export function MobileSidebar({ toggleMenu, isMenuOpen }: IProps) {
           </ListItemIcon>
           <ListItemText primary='Menu' />
         </ListItem>
-        <ListItem >
+        <ListItem onClick={toggleMenu}>
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
           <ListItemText primary='Aluguel' />
         </ListItem>
-        <ListItem>
+        <ListItem onClick={toggleMenu}>
           <ListItemIcon>
             <InfoIcon />
           </ListItemIcon>
           <ListItemText primary='Vendas' />
         </ListItem>
-        <ListItem>
+        <ListItem onClick={toggleMenu}>
           <ListItemIcon>
             <ContactMailIcon />
           </ListItemIcon>
           <ListItemText primary='Sobre' />
         </ListItem>
-        <ListItem>
+        <ListItem onClick={toggleMenu}>
           <ListItemIcon>
             <PersonIcon />
           </ListItemIcon>
           <ListItemText primary='Contato' />
         </ListItem>
-        <ListItem>
+        <ListItem onClick={toggleMenu}>
           <ListItemIcon>
             <LockOpenIcon />
           </ListItemIcon>
