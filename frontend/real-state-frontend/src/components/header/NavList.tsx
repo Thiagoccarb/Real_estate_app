@@ -17,7 +17,7 @@ type Item = {
 }
 
 function NavList({ items }: Item) {
-  const [cookieValue, _] = useCookie('credentials');
+  const [cookieValue, , deleteCookie] = useCookie('credentials');
   const { handleModal } = useContext<AppContextType>(AppContext);
   const { pathname } = useLocation();
   const [, path] = pathname.split('/')
@@ -53,6 +53,25 @@ function NavList({ items }: Item) {
             {item}
           </Button>
         ))
+      }
+      {
+        cookieValue && (
+          <Button
+            component="li"
+            disableRipple
+            disableFocusRipple={true}
+            className={classes.navButton}
+            sx={{
+              ...greenHoverEffectCss, color: 'inherit'
+            }}
+            onClick={() => {
+              deleteCookie('credentials');
+              setTimeout(() => navigate('/home'), 1500);
+            }}
+          >
+            Sair
+          </Button>
+        )
       }
       {
         !cookieValue && (

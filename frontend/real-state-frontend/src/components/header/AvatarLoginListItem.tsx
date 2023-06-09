@@ -31,7 +31,7 @@ export function AvatarLoginListItem() {
   const open = Boolean(anchorEl);
 
   return (
-    <div>
+    <div style={{ display: 'flex' }}>
       <Button
         disableTouchRipple
         onClick={handlePopoverOpen}

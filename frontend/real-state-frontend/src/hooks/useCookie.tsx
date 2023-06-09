@@ -12,11 +12,15 @@ interface CookieSetOptions {
 }
 
 export function useCookie(key: string) {
-  const [cookies, setCookie] = useCookies([key]);
+  const [cookies, setCookie, removeCookie] = useCookies([key]);
 
   const updateCookie = (value: string, options: CookieSetOptions | undefined) => {
     setCookie(key, value, options);
   };
 
-  return [cookies[key], updateCookie];
+  const deleteCookie = (options: CookieSetOptions | undefined) => {
+    removeCookie(key, options);
+  };
+
+  return [cookies[key], updateCookie, deleteCookie];
 }
