@@ -29,15 +29,16 @@ export const theme = createTheme({
       fontWeight: 700,
       margin: '20px 0'
     },
-     h3: {
-       fontSize: '3.5vmin',
-       fontWeight: 500,
-       margin: '20px 0'
-     },
-    // h4: {
-    //   fontSize: '1rem',
-    //   fontWeight: 700,
-    // },
+    h3: {
+      fontSize: '3.5vmin',
+      fontWeight: 500,
+      margin: '20px 0'
+    },
+    h4: {
+      fontSize: '3.0vmin',
+      fontWeight: 500,
+      margin: '20px 0'
+    },
     // h5: {
     //   fontSize: '1rem',
     //   fontWeight: 600,
@@ -87,4 +88,12 @@ export const useStyles = makeStyles((theme: Theme) => ({
       color: `${theme.palette.primary.dark} !important`
     },
   }),
+  shadows: {
+    boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2)',
+    transition: 'transform 0.3s, box-shadow 0.3s',
+    '&:hover': {
+      boxShadow: '0 8px 20px rgba(0, 0, 0, 0.3)',
+      transform: 'translateY(-2px)',
+    },
+  },
 }));
