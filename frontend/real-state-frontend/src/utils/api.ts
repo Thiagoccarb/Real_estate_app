@@ -57,12 +57,35 @@ export const login = async (data: { email: string, password: string, username: s
 }
 
 export const createProperty = async (
-  data: IProperty
+  data: Omit<IProperty, 'images'>
 ): Promise<null | IResponse> => {
   const {token} = await getCookie();
-  console.log(token)
   try {
     const url = `${BASE_URL}/properties`;
+    const request = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': token,
+      }),
+    });
+    const response = await request.json()
+    return {
+      ...response,
+      status: request?.status
+    }
+  } catch (error) {
+    return null
+  }
+}
+
+export const createPropertyImages = async (
+  data: {list_str_binary: string[], property_id: number }
+): Promise<null | IResponse> => {
+  const {token} = await getCookie();
+  try {
+    const url = `${BASE_URL}/images/batch`;
     const request = await fetch(url, {
       method: "POST",
       body: JSON.stringify(data),
