@@ -7,7 +7,9 @@ import Home from './pages/home/Home';
 import DeskTopHeader from "./components/header/DesktopHeader";
 import { MobileHeader } from "./components/header/MobileHeader";
 import { AppContext, AppContextType } from "./context/appContext";
-import AddProperty from "./pages/adminPage/AddProperty";
+import AddProperty from "./pages/adminPage/components/AddProperty";
+import PropertiesForRent from "./pages/rent/PropertiesForRent";
+import PropertiesForSale from "./pages/sale/PropertiesForSale";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -45,6 +47,8 @@ const AppRoutes = () => {
             <Routes>
               <Route path="/logged/add-property" element={<AddProperty />} />
               <Route path="/home" element={<Home />} />
+              <Route path="/aluguel" element={<PropertiesForRent />} />
+              <Route path="/venda" element={<PropertiesForSale />} />
             </Routes>
           </Suspense>
         </ErrorBoundary>
