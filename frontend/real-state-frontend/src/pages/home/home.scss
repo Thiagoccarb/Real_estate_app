@@ -35,7 +35,7 @@
   height: calc(100vw / 1.8);
   max-height: 782px;
   overflow: hidden;
-
+  
   &::after {
     content: "O melhor lugar para o seu investimento";
     position: absolute;
@@ -56,7 +56,90 @@
   0% {
     left: -100%;
   }
+
   100% {
     left: 20%;
   }
+}
+
+#caroussel-card {
+  background-color: #012942;
+
+  h3,
+  h4,
+  span {
+    color: white;
+  }
+
+  h4 {
+    min-height: 150px;
+    color: #7C858E
+  }
+
+
+  button, h3, h4 {
+    margin-left: 16px;
+  }
+}
+
+.carousel-image-desktop {
+  display: block;
+  width: 50%;
+  height: auto;
+  max-height: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+
+.carousel-image-mobile, .property-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  /* Set a maximum height for the image */
+  aspect-ratio: 16/9;
+  /* 16:9 aspect ratio */
+  object-fit: cover;
+}
+
+#caroussel-container {
+  margin-top: 100px;
+}
+
+#property-card {
+
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Hide the scrollbar track */
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* Style the scrollbar thumb */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+}
+
+/* Show the scrollbar only when hovered or scrolled */
+::-webkit-scrollbar {
+  width: 4px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Show the scrollbar when hovered */
+:hover::-webkit-scrollbar {
+  opacity: 1;
+}
+
+/* Show the scrollbar when scrolled */
+:active::-webkit-scrollbar {
+  opacity: 1;
 }
