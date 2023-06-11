@@ -15,8 +15,10 @@ import ChangeCircleIcon from '@mui/icons-material/ChangeCircle';
 
 import { theme } from '../../styles/styles';
 import { useCookie } from '../../hooks/useCookie';
+import { useNavigate } from 'react-router-dom';
 
 export function AvatarLoginListItem() {
+  const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [cookieValue, _] = useCookie('credentials');
 
@@ -59,7 +61,7 @@ export function AvatarLoginListItem() {
           }}
         >
           <List>
-            <ListItem button>
+            <ListItem button onClick={() =>navigate('/logged/add-property') }>
               <ListItemIcon>
                 <AddIcon />
               </ListItemIcon>
