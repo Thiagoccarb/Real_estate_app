@@ -1,5 +1,5 @@
 
-import AddProperty from './AddProperty';
+import AddProperty from './components/AddProperty';
 
 function AdminPage() {
   return (
