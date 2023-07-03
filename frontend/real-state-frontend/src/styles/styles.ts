@@ -96,4 +96,65 @@ export const useStyles = makeStyles((theme: Theme) => ({
       transform: 'translateY(-2px)',
     },
   },
+  closeButton: {
+    position: 'relative',
+    width: 'fit-content',
+    '&.MuiButton-root': {
+      fontSize: '3.5vmin',
+      backgroundColor: 'transparent',
+      '&:hover': {
+        backgroundColor: 'inherit'
+      },
+    },
+  },
+  overlay: {
+    top: '0',
+    left: '0',
+    backgroundColor: 'black',
+    display: 'flex',
+    position: 'fixed',
+    width: '100%',
+    height: '100vh',
+    transition: '0.3s ease-in-out',
+    opacity: 0,
+    visibility: 'hidden',
+    zIndex: 99
+  },
+  active: {
+    opacity: 1,
+    visibility: 'visible',
+  },
+  leftArrowButton: {
+    position: 'absolute',
+    top: '50%',
+    color: 'white',
+    '&:hover': {
+      cursor: 'pointer',
+      filter: 'drop-shadow(0 0 5px rgba(0, 0, 0, 0.3))',
+      transform: 'scale(1.2)',
+      transition: 'transform 0.3s ease-in-out',
+    },
+    '&.MuiSvgIcon-root': {
+      height: '8vmin',
+      width: '8vmin',
+      transition: 'transform 0.3s ease-in-out'
+    },
+  },
+  rightArrowButton: {
+    position: 'absolute',
+    top: '50%',
+    right: 0,
+    color: 'white',
+    '&:hover': {
+      cursor: 'pointer',
+      filter: 'drop-shadow(0 0 5px rgba(0, 0, 0, 0.3))',
+      transform: 'scale(1.2)',
+      transition: 'transform 0.3s ease-in-out',
+    },
+    '&.MuiSvgIcon-root': {
+      height: '8vmin',
+      width: '8vmin',
+      transition: 'transform 0.3s ease-in-out'
+    },
+  },
 }));
