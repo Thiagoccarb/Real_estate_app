@@ -20,7 +20,7 @@ const Caroussel = ({ data }: { data: IResult[] | undefined }) => {
   const responsive = {
 
     desktop: {
-      breakpoint: { max: 1440, min: 768 },
+      breakpoint: { max: 3400, min: 768 },
       items: 1,
     },
 
