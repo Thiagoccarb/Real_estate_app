@@ -2,21 +2,22 @@ import { useContext } from 'react';
 import { Card, CardContent, Typography } from '@material-ui/core';
 import { Bathtub as BathtubIcon, KingBed as KingBedIcon } from '@material-ui/icons';
 import { Box } from '@mui/system';
+import Carousel from 'react-multi-carousel';
+import { useNavigate } from 'react-router-dom';
 
-import '../../pages/home/home.scss';
 import { AppContext, AppContextType } from '../../context/appContext';
 import { IResult } from '../../pages/home/Home';
 import { theme, useStyles } from '../../styles/styles';
-import Carousel from 'react-multi-carousel';
+import '../../pages/home/home.scss';
 
 const PropertyCards = ({ data, title }: { data: IResult[] | [], title: string }) => {
+  const navigate = useNavigate()
   const classes = useStyles({ color: theme.palette.primary.dark });
   const { isMobileScreen } = useContext<AppContextType>(AppContext);
 
   const responsive = {
-
     desktop: {
-      breakpoint: { max: 1440, min: 768 },
+      breakpoint: { max: 3400, min: 768 },
       items: 1,
     },
 
@@ -51,6 +52,10 @@ const PropertyCards = ({ data, title }: { data: IResult[] | [], title: string })
                   component="li"
                   key={property.id}
                   className={classes.shadows}
+                  onClick={() => {
+                    const forRentPath = title.split(' ').includes('Aluguel') ? 'aluguel' : 'venda'
+                    navigate(`/${forRentPath}/${property.id}`)
+                  }}
                 >
                   <picture>
                     <source type="image/png" />
