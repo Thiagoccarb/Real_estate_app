@@ -9,7 +9,7 @@ import '../DesktopHeader.scss'
 import { useState } from 'react';
 
 export function MobileHeader() {
-  const [isMenuOpen, setIsMenuOpen] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
