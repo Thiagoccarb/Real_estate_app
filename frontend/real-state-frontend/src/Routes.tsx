@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Suspense, useContext } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -10,6 +10,8 @@ import { AppContext, AppContextType } from "./context/appContext";
 import AddProperty from "./pages/adminPage/components/AddProperty";
 import PropertiesForRent from "./pages/rent/PropertiesForRent";
 import PropertiesForSale from "./pages/sale/PropertiesForSale";
+import PropertyDetails from "./pages/houseDetails/PropertyDetails";
+import ProtectedRoutes from "./components/ProtectedRoutes";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -31,12 +33,13 @@ function ErrorFallback() {
       width: "100%",
       fontSize: "6vmin"
     }}
-  >An error has occurred during fetching data, please try again.
+  >An error has occurred, please try again later.
   </h1>;
 }
 
 const AppRoutes = () => {
   const { isMobileScreen } = useContext<AppContextType>(AppContext);
+
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
@@ -45,10 +48,16 @@ const AppRoutes = () => {
             {isMobileScreen && <MobileHeader />}
             {!isMobileScreen && <DeskTopHeader />}
             <Routes>
-              <Route path="/logged/add-property" element={<AddProperty />} />
+              <Route path="/" element={<Navigate to="/home" replace />} />
               <Route path="/home" element={<Home />} />
               <Route path="/aluguel" element={<PropertiesForRent />} />
+              <Route path="/aluguel/:id" element={<PropertyDetails />} />
+              <Route path="/venda/:id" element={<PropertyDetails />} />
               <Route path="/venda" element={<PropertiesForSale />} />
+              <Route element={<ProtectedRoutes />} >
+                <Route path="/logged/add-property" element={<AddProperty />} />
+              </Route>
+              <Route path="*" element={<h1 style={{ margin: 'auto', textAlign: 'center' }} >Page not found</h1>} />
             </Routes>
           </Suspense>
         </ErrorBoundary>
