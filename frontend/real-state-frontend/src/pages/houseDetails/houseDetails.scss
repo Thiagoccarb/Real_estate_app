@@ -1,0 +1,41 @@
+.property-image {
+  position: relative;
+  opacity: 1;
+  animation: fade-in 300ms ease-in-out;
+  width: 100%;
+}
+
+.properties-container {
+  cursor: pointer;
+  min-width: 80px;
+  transition: transform 0.3s ease-in-out;
+  &:hover {
+    img {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.property-image.hidden {
+  display: none;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
