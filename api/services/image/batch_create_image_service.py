@@ -39,7 +39,7 @@ class BatchAddImageService:
                 raise StatusError(f"invalid binary string", 422, "unprocessable_entity")
 
             hashed_base64_decoded_data_str = md5_encrypter(base64_decoded_data)
-            print('upload_binary_to_blackblaze')
+            print("upload_binary_to_blackblaze")
             self.b2.upload_binary_to_blackblaze(base64_decoded_data)
             url: str = self.b2.get_download_url()
             new_image_data = await self.image_repository.add(

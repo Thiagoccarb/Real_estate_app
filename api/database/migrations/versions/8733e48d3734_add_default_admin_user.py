@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '8733e48d3734'
-down_revision = '2f9e7787ff43'
+revision = "8733e48d3734"
+down_revision = "2f9e7787ff43"
 branch_labels = None
 depends_on = None
 
@@ -24,6 +24,7 @@ def upgrade() -> None:
         VALUES ('admin', 'user1234@gmail.com', '1234567abcd!T')
         """
     )
+
 
 def downgrade() -> None:
     # Add the code to remove the default admin user
