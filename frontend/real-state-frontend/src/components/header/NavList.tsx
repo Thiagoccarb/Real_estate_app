@@ -1,3 +1,4 @@
+import { useContext } from 'react';
 import { Stack, Button } from '@mui/material';
 
 import Divider from '@mui/material/Divider';
@@ -6,12 +7,18 @@ import '../DesktopHeader.scss'
 import { theme, useStyles } from '../../styles/styles';
 import { createHoverUnderlineEffect } from '../../styles/effects';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { AppContextType, AppContext } from '../../context/appContext';
+import { AvatarLoginListItem } from './AvatarLoginListItem';
+
+import { useCookie } from '../../hooks/useCookie';
 
 type Item = {
   items: string[]
 }
 
 function NavList({ items }: Item) {
+  const [cookieValue, , deleteCookie] = useCookie('credentials');
+  const { handleModal } = useContext<AppContextType>(AppContext);
   const { pathname } = useLocation();
   const [, path] = pathname.split('/')
 
@@ -46,6 +53,43 @@ function NavList({ items }: Item) {
             {item}
           </Button>
         ))
+      }
+      {
+        cookieValue && (
+          <Button
+            component="li"
+            disableRipple
+            disableFocusRipple={true}
+            className={classes.navButton}
+            sx={{
+              ...greenHoverEffectCss, color: 'inherit'
+            }}
+            onClick={() => {
+              deleteCookie('credentials');
+              setTimeout(() => navigate('/home'), 1500);
+            }}
+          >
+            Sair
+          </Button>
+        )
+      }
+      {
+        !cookieValue && (
+          <Button
+            component="li"
+            color='inherit'
+            disableRipple
+            disableFocusRipple={true}
+            className={classes.navButton}
+            sx={greenHoverEffectCss}
+            onClick={() => handleModal(true)}
+          >
+            login
+          </Button>
+        )
+      }
+      {
+        cookieValue && <AvatarLoginListItem />
       }
     </Stack>
   )

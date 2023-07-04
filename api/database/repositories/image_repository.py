@@ -29,11 +29,11 @@ class ImagesRepository(AbstractImagesRepository):
         self.session = session
 
     async def add(self, data: CreateImage) -> Image:
-        image = mappings.Image(**data.dict())
-        self.session.add(image)
-        await self.session.commit()
-
-        await self.session.refresh(image)
+        async with self.session.begin():
+            image = mappings.Image(**data.dict())
+            self.session.add(image)
+        async with self.session.begin():
+            await self.session.refresh(image)
         return Image.from_orm(image)
 
     async def find_all_by_property_id(self, property_id: int) -> List[Image]:

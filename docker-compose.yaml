@@ -13,6 +13,12 @@ services:
       - ./api/.env
     environment:
       - API_DB_HOST=db
+  frontend:
+    build: ./frontend/real-state-frontend
+    networks:
+      - deploy_fast_api_project
+    env_file:
+      - ./frontend/real-state-frontend/.env
   db:
     container_name: db
     image: mysql

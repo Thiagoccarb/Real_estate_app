@@ -1,9 +1,7 @@
 import { Box } from '@material-ui/core';
 import { UseQueryResult, useQuery } from 'react-query';
-
-import Hero from './components/Hero';
 import { Outlet } from 'react-router-dom';
-import Caroussel from './components/Caroussel';
+
 import PropertyCards from '../../components/cards/PropertyCards';
 import Footer from '../../components/Footer';
 
@@ -41,7 +39,7 @@ export interface IData {
   result: IResult[]
 }
 
-function Home() {
+function PropertiesForSale() {
   const abortController = new AbortController();
   const abortSignal = abortController.signal;
 
@@ -50,13 +48,6 @@ function Home() {
     const request = await fetch(url, { signal: abortSignal });
     const response = await request.json()
     return response
-  });
-
-  const newPropertiesData = data?.result?.filter((item) => {
-    const createdAt = new Date(item.created_at);
-    const date = new Date();
-    date.setDate(date.getDate() - 7);
-    return createdAt.getTime() > date.getTime();
   });
 
   return (
@@ -68,14 +59,11 @@ function Home() {
         flexDirection="column"
         style={{ margin: '50px 20px 0 20px' }}
       >
-        <Hero />
-        <Caroussel data={newPropertiesData ?? []} />
-        <PropertyCards title='Aluguel de imóveis' data={data?.result.filter((item) => item.action == 'rent').slice(0, 2) ?? []} />
-        <PropertyCards title='Venda de imóveis' data={data?.result.filter((item) => item.action == 'sale').slice(0, 2) ?? []} />
+        <PropertyCards title='Venda de imóveis' data={data?.result.filter((item) => item.action == 'sale') ?? []} />
         <Footer />
       </Box>
     </>
   )
 }
 
-export default Home;
+export default PropertiesForSale;
